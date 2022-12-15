@@ -1,0 +1,1 @@
+A feladat egy webáruház alkalmazás modellezése a következő osztályok létrehozásával
