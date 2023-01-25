@@ -1,0 +1,20 @@
+insert into users(name) values ('John Doe');
+insert into users(name) values ('John Wick');
+insert into users(name) values ('Jane Doe');
+insert into users(name) values ('Arnold Schwarzenegger');
+insert into users(name) values ('Bruce Wayne');
+insert into users(name) values ('Bruce Lee');
+
+insert into advertisements(user_id, title) values (1, 'How to reach success');
+insert into advertisements(user_id, title) values (2, 'Revenge');
+insert into advertisements(user_id, title) values (3, 'In the path of G.I. Jane');
+insert into advertisements(user_id, title) values (4, 'Be like Terminator');
+insert into advertisements(user_id, title) values (4, 'From Austria to the USA');
+insert into advertisements(user_id, title) values (5, 'Superhero cape');
+insert into advertisements(user_id, title) values (5, 'Get over on your fears');
+insert into advertisements(user_id, title) values (5, 'Eliminate Lex');
+insert into advertisements(user_id, title) values (6, 'Way of The Dragon');
+insert into advertisements(user_id, title) values (6, 'Fast as lightning');
+insert into advertisements(user_id, title) values (6, 'Be like water my friend');
+insert into advertisements(user_id, title) values (6, 'Against Chuck Norris');
+insert into advertisements(user_id, title) values (6, 'Iron fist');
