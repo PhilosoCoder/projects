@@ -42,12 +42,6 @@ public class Service extends HttpServlet {
                         user -> advertisementRepository.listAdvertisementsByUser(user.getId())));
     }
 
-    private void configureFlyway(MariaDbDataSource dataSource) {
-        Flyway flyway = Flyway.configure().cleanDisabled(false).dataSource(dataSource).load();
-        flyway.clean();
-        flyway.migrate();
-    }
-
     private MariaDbDataSource createDataSource() {
         MariaDbDataSource dataSource = new MariaDbDataSource();
         try {
@@ -58,5 +52,11 @@ public class Service extends HttpServlet {
             throw new IllegalStateException("Can not reach database.", se);
         }
         return dataSource;
+    }
+
+    private void configureFlyway(MariaDbDataSource dataSource) {
+        Flyway flyway = Flyway.configure().cleanDisabled(false).dataSource(dataSource).load();
+        flyway.clean();
+        flyway.migrate();
     }
 }
