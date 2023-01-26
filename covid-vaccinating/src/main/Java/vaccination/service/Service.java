@@ -1,7 +1,11 @@
-package vaccination;
+package vaccination.service;
 
 import org.flywaydb.core.Flyway;
 import org.mariadb.jdbc.MariaDbDataSource;
+import vaccination.controller.CitizenRepository;
+import vaccination.controller.CityRepository;
+import vaccination.controller.VaccinationRepository;
+import vaccination.model.*;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -23,9 +27,7 @@ public class Service {
 
     public Service() {
         DataSource dataSource = createDataSource();
-        Flyway flyway = Flyway.configure().cleanDisabled(false).locations("vaccination/db/migration").dataSource(dataSource).load();
-        flyway.clean();
-        flyway.migrate();
+        configFlyway(dataSource);
         this.citizenRepository = new CitizenRepository(dataSource);
         this.cityRepository = new CityRepository(dataSource);
         this.vaccinationRepository = new VaccinationRepository(dataSource);
@@ -45,11 +47,7 @@ public class Service {
 
     public void massRegistration(Path path) {
         try (Scanner scan = new Scanner(path)) {
-            scan.nextLine();
-            while (scan.hasNext()) {
-                String[] citizenData = scan.nextLine().split(";");
-                registration(citizenData[0], cityRepository.listCitiesByZipCode(citizenData[1]).get(0), Integer.parseInt(citizenData[2]), citizenData[3], citizenData[4]);
-            }
+            registerCitizens(scan);
         } catch (IOException ioe) {
             throw new IllegalArgumentException("Unreadable file or wrong path: " + path, ioe);
         }
@@ -61,29 +59,14 @@ public class Service {
         List<Citizen> citizens = createCitizensDataList(city, date);
 
         updateVaccinations(citizens, date);
-        citizens.stream()
-                .map(c -> String.join(";", c.getName(), c.getCity().getZipCode(), String.valueOf(c.getAge()), c.getEmail(), c.getSsn()))
-                .collect(Collectors.toCollection(() -> toFile));
-
-        for (int i = 1; i < toFile.size(); i++) {
-            toFile.set(i, String.format("%02d:%02d;%s", time.getHour(), time.getMinute(), toFile.get(i)));
-            time = time.plusMinutes(30L);
-        }
-
-        try {
-            Files.write(path, toFile);
-        } catch (IOException ioe) {
-            throw new IllegalStateException("Can not create file: " + path, ioe);
-        }
+        processCitizens(time, toFile, citizens);
+        writeToFile(path, toFile);
     }
 
     public void vaccination(Citizen citizen, LocalDate date, VaccineType type) {
         Vaccination updating = citizen.getLastVaccination();
         if (citizen.getVaccinations().size() == 1) {
-            updating.setStatus(Status.ADMINISTRATED);
-            updating.setType(type);
-            vaccinationRepository.updateVaccination(updating);
-            vaccinationRepository.saveVaccination(new Vaccination(citizen.getId(), date.plusDays(16L), Status.PREPARED));
+            updateVaccinations(citizen, date, type, updating);
         } else {
             updating.setStatus(Status.ADMINISTRATED);
             vaccinationRepository.updateVaccination(updating);
@@ -130,8 +113,21 @@ public class Service {
         return dataSource;
     }
 
-    private List<Citizen> createCitizensDataList(City city, LocalDate date) {
+    private void configFlyway(DataSource dataSource) {
+        Flyway flyway = Flyway.configure().cleanDisabled(false).locations("vaccination/db/migration").dataSource(dataSource).load();
+        flyway.clean();
+        flyway.migrate();
+    }
 
+    private void registerCitizens(Scanner scan) {
+        scan.nextLine();
+        while (scan.hasNext()) {
+            String[] citizenData = scan.nextLine().split(";");
+            registration(citizenData[0], cityRepository.listCitiesByZipCode(citizenData[1]).get(0), Integer.parseInt(citizenData[2]), citizenData[3], citizenData[4]);
+        }
+    }
+
+    private List<Citizen> createCitizensDataList(City city, LocalDate date) {
         return citizenRepository.listCitizensByCity(city, vaccinationRepository)
                 .stream()
                 .filter(c -> c.canBeVaccinated(date))
@@ -150,6 +146,32 @@ public class Service {
                     last.setStatus(Status.PREPARED);
                     vaccinationRepository.updateVaccination(last);
                 });
+    }
+
+    private void processCitizens(LocalTime time, List<String> toFile, List<Citizen> citizens) {
+        citizens.stream()
+                .map(c -> String.join(";", c.getName(), c.getCity().getZipCode(), String.valueOf(c.getAge()), c.getEmail(), c.getSsn()))
+                .collect(Collectors.toCollection(() -> toFile));
+
+        for (int i = 1; i < toFile.size(); i++) {
+            toFile.set(i, String.format("%02d:%02d;%s", time.getHour(), time.getMinute(), toFile.get(i)));
+            time = time.plusMinutes(30L);
+        }
+    }
+
+    private void writeToFile(Path path, List<String> toFile) {
+        try {
+            Files.write(path, toFile);
+        } catch (IOException ioe) {
+            throw new IllegalStateException("Can not create file: " + path, ioe);
+        }
+    }
+
+    private void updateVaccinations(Citizen citizen, LocalDate date, VaccineType type, Vaccination updating) {
+        updating.setStatus(Status.ADMINISTRATED);
+        updating.setType(type);
+        vaccinationRepository.updateVaccination(updating);
+        vaccinationRepository.saveVaccination(new Vaccination(citizen.getId(), date.plusDays(16L), Status.PREPARED));
     }
 
     public CitizenRepository getCitizenRepository() {

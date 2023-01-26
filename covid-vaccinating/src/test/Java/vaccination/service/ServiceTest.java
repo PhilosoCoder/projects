@@ -1,8 +1,9 @@
-package vaccination;
+package vaccination.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import vaccination.model.*;
 
 import java.io.File;
 import java.io.IOException;

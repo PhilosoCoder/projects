@@ -1,4 +1,4 @@
-package vaccination;
+package vaccination.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -35,6 +35,28 @@ public class Citizen {
         this.vaccinations = vaccinations;
     }
 
+    public List<Vaccination> getVaccinations() {
+        return new ArrayList<>(vaccinations);
+    }
+
+    public Vaccination getLastVaccination() {
+        return vaccinations.get(vaccinations.size() - 1);
+    }
+
+    public boolean canBeVaccinated(LocalDate date) {
+        Vaccination last = getLastVaccination();
+        if (last.getStatus().equals(Status.CANCELLED)) {
+            return false;
+        }
+        if (last.getStatus().equals(Status.ADMINISTRATED)) {
+            return false;
+        }
+        if (last.getStatus().equals(Status.PREPARED)) {
+            return last.getDate().equals(date);
+        }
+        return true;
+    }
+
     public Long getId() {
         return id;
     }
@@ -57,27 +79,5 @@ public class Citizen {
 
     public String getSsn() {
         return ssn;
-    }
-
-    public List<Vaccination> getVaccinations() {
-        return new ArrayList<>(vaccinations);
-    }
-
-    public Vaccination getLastVaccination() {
-        return vaccinations.get(vaccinations.size() - 1);
-    }
-
-    public boolean canBeVaccinated(LocalDate date) {
-        Vaccination last = getLastVaccination();
-        if (last.getStatus().equals(Status.CANCELLED)) {
-            return false;
-        }
-        if (last.getStatus().equals(Status.ADMINISTRATED)) {
-            return false;
-        }
-        if (last.getStatus().equals(Status.PREPARED)) {
-            return last.getDate().equals(date);
-        }
-        return true;
     }
 }

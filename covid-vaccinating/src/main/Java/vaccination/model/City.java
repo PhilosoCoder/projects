@@ -1,4 +1,4 @@
-package vaccination;
+package vaccination.model;
 
 public class City {
 

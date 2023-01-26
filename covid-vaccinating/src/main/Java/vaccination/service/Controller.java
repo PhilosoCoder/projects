@@ -1,4 +1,6 @@
-package vaccination;
+package vaccination.service;
+
+import vaccination.model.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -114,19 +116,7 @@ public class Controller {
         String ssn = scan.nextLine();
         checkSsn(ssn);
         Citizen citizen = service.findCitizenBySsn(ssn);
-        if (printLastVaccination(citizen)) {
-            System.out.print("Adja meg az új oltás dátumát(ÉÉÉÉ-HH-NN): ");
-            LocalDate date = LocalDate.parse(scan.nextLine());
-            if (citizen.getLastVaccination().getDate().equals(date)) {
-                VaccineType newType = getNewType(citizen);
-                service.vaccination(citizen, date, newType);
-                System.out.println("Az oltás rögzítésre került.");
-            } else {
-                System.out.print("A(z) " + ssn + " TAJ számú páciens nem oltható a megadott napon!");
-            }
-        } else {
-            System.out.print("A(z) " + ssn + " TAJ számú páciens nem oltható: nincs időpontja, lemondta, vagy megkapta az oltásait!");
-        }
+        vaccination(ssn, citizen);
         return sideMenu();
     }
 
@@ -163,6 +153,10 @@ public class Controller {
                    1.Vissza a menübe
                    2.Kilépés
                                Válasz:\040""");
+        return extractAnswer();
+    }
+
+    private boolean extractAnswer() {
         int menuItem = Integer.parseInt(scan.nextLine());
         if (menuItem == 1) {
             return true;
@@ -180,19 +174,21 @@ public class Controller {
             throw new IllegalArgumentException("No such ZIP code.");
         }
         System.out.println("Válasszon települést!");
-
-        for (int i = 0; i < cities.size(); i++) {
-            City actual = cities.get(i);
-            System.out.print("\t" + (i + 1) + ". " + actual.getName() + (actual.getDistrict() == null ? "" : ":" + actual.getDistrict()));
-        }
-        System.out.print("\n\t\tVálasz: ");
-
+        printAnswer(cities);
         try {
             return cities.get(Integer.parseInt(scan.nextLine()) - 1);
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
             System.out.println("Nincs ilyen opció.");
             throw new IllegalArgumentException("No such option.", e);
         }
+    }
+
+    private void printAnswer(List<City> cities) {
+        for (int i = 0; i < cities.size(); i++) {
+            City actual = cities.get(i);
+            System.out.print("\t" + (i + 1) + ". " + actual.getName() + (actual.getDistrict() == null ? "" : ":" + actual.getDistrict()));
+        }
+        System.out.print("\n\t\tVálasz: ");
     }
 
     private boolean isCorrectPath(Path path) {
@@ -318,5 +314,21 @@ public class Controller {
             return (evens + odds) % 10 == cdv;
         }
         return false;
+    }
+
+    private void vaccination(String ssn, Citizen citizen) {
+        if (printLastVaccination(citizen)) {
+            System.out.print("Adja meg az új oltás dátumát(ÉÉÉÉ-HH-NN): ");
+            LocalDate date = LocalDate.parse(scan.nextLine());
+            if (citizen.getLastVaccination().getDate().equals(date)) {
+                VaccineType newType = getNewType(citizen);
+                service.vaccination(citizen, date, newType);
+                System.out.println("Az oltás rögzítésre került.");
+            } else {
+                System.out.print("A(z) " + ssn + " TAJ számú páciens nem oltható a megadott napon!");
+            }
+        } else {
+            System.out.print("A(z) " + ssn + " TAJ számú páciens nem oltható: nincs időpontja, lemondta, vagy megkapta az oltásait!");
+        }
     }
 }

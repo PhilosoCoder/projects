@@ -1,9 +1,10 @@
-package vaccination;
+package vaccination.controller;
 
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mariadb.jdbc.MariaDbDataSource;
+import vaccination.model.City;
 
 import java.sql.SQLException;
 import java.util.List;

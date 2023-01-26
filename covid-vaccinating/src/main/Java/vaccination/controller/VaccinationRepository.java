@@ -1,9 +1,14 @@
-package vaccination;
+package vaccination.controller;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import vaccination.model.Status;
+import vaccination.model.Vaccination;
+import vaccination.model.VaccineType;
 
 import javax.sql.DataSource;
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public class VaccinationRepository {
@@ -23,14 +28,7 @@ public class VaccinationRepository {
 
     public List<Vaccination> listVaccinationsByCitizen(long citizenId) {
         return jdbcTemplate.query("SELECT * FROM Vaccinations WHERE citizen_id = ?",
-                (resultSet, rowNum) -> new Vaccination(
-                        resultSet.getLong("id"),
-                        resultSet.getLong("citizen_id"),
-                        resultSet.getDate("vaccination_date") == null ? null : resultSet.getDate("vaccination_date").toLocalDate(),
-                        resultSet.getString("vaccine_type") == null ? null : VaccineType.valueOf(resultSet.getString("vaccine_type")),
-                        Status.valueOf(resultSet.getString("status")),
-                        resultSet.getString("note")
-                ), citizenId);
+                (resultSet, rowNum) -> getVaccination(resultSet), citizenId);
     }
 
     public void updateVaccination(Vaccination vaccination) {
@@ -40,5 +38,16 @@ public class VaccinationRepository {
                 vaccination.getStatus().toString(),
                 vaccination.getNote(),
                 vaccination.getId());
+    }
+
+    private Vaccination getVaccination(ResultSet resultSet) throws SQLException {
+        return new Vaccination(
+                resultSet.getLong("id"),
+                resultSet.getLong("citizen_id"),
+                resultSet.getDate("vaccination_date") == null ? null : resultSet.getDate("vaccination_date").toLocalDate(),
+                resultSet.getString("vaccine_type") == null ? null : VaccineType.valueOf(resultSet.getString("vaccine_type")),
+                Status.valueOf(resultSet.getString("status")),
+                resultSet.getString("note")
+        );
     }
 }
