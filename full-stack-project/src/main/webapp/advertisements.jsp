@@ -16,7 +16,7 @@
 	<table>
 		<tr>
 			<th>Name</th>
-			<th>Advertisements</th>
+			<th>Advertisement(s)</th>
 		</tr>
 		<%
 			Map<String, List<Advertisement>> list = new Service().listAdvertisementsByUsers();
