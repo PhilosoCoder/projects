@@ -11,7 +11,7 @@
 </head>
 <body>
   <a href="javascript:history.go(-1)">
-  <img src="back-button.png" alt="Go Back">
+  <img src="back-button.png" width="40" height="40" alt="Go Back">
   </a>
   <table>
     <tr>
