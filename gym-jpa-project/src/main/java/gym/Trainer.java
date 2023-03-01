@@ -2,8 +2,8 @@ package gym;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "trainers")
@@ -16,8 +16,8 @@ public class Trainer {
     @ManyToOne
     private Gym gym;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    private Set<Athlete> athletes = new HashSet<>();
+    @ManyToMany(mappedBy = "trainers", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Athlete> athletes = new ArrayList<>();
 
     private String name;
 
@@ -54,11 +54,11 @@ public class Trainer {
         this.gym = gym;
     }
 
-    public Set<Athlete> getAthletes() {
+    public List<Athlete> getAthletes() {
         return athletes;
     }
 
-    public void setAthletes(Set<Athlete> athletes) {
+    public void setAthletes(List<Athlete> athletes) {
         this.athletes = athletes;
     }
 

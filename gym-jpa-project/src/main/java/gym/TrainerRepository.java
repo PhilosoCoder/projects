@@ -13,15 +13,24 @@ public class TrainerRepository {
         this.factory = factory;
     }
 
-    public Trainer saveTrainer(Trainer trainer) {
+    public void deleteTrainersGym(long trainerId) {
         EntityManager manager = factory.createEntityManager();
         try {
             manager.getTransaction().begin();
-            manager.persist(trainer);
+            Trainer trainer= manager.find(Trainer.class, trainerId);
+            trainer.setGym(null);
             manager.getTransaction().commit();
-            return trainer;
         } finally {
             manager.close();
+        }
+    }
+
+    public Trainer findTrainerById(long trainerId) {
+        EntityManager em = factory.createEntityManager();
+        try {
+            return em.find(Trainer.class, trainerId);
+        } finally {
+            em.close();
         }
     }
 
@@ -34,18 +43,6 @@ public class TrainerRepository {
                     .getResultList();
         } finally {
             manager.close();
-        }
-    }
-
-    public void deleteTrainer(long trainerId) {
-        EntityManager entityManager = factory.createEntityManager();
-        try {
-            entityManager.getTransaction().begin();
-            Trainer trainer = entityManager.getReference(Trainer.class, trainerId);
-            entityManager.remove(trainer);
-            entityManager.getTransaction().commit();
-        } finally {
-            entityManager.close();
         }
     }
 

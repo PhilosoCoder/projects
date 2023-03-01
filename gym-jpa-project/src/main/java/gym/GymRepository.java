@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
-import java.util.Set;
 
 public class GymRepository {
 
@@ -61,6 +60,24 @@ public class GymRepository {
         }
     }
 
+    public Athlete findAthleteById(long athleteId) {
+        EntityManager manager = factory.createEntityManager();
+        try {
+            return manager.find(Athlete.class, athleteId);
+        } finally {
+            manager.close();
+        }
+    }
+
+    public Gym findGymById(long gymId) {
+        EntityManager manager = factory.createEntityManager();
+        try {
+            return manager.find(Gym.class, gymId);
+        } finally {
+            manager.close();
+        }
+    }
+
     public Gym findGymWithTrainersByTrainingType(long gymId, TrainingType trainingType) {
         EntityManager manager = factory.createEntityManager();
         try {
@@ -79,25 +96,34 @@ public class GymRepository {
         }
     }
 
-    public Athlete findAthleteById(long athleteId) {
+    public List<Trainer> listTrainersOfGym(long gymID) {
         EntityManager manager = factory.createEntityManager();
         try {
-            return manager.find(Athlete.class, athleteId);
+            manager.getTransaction().begin();
+            List<Trainer> trainers = manager.createQuery(
+                            "select trainer " +
+                                    "from Trainer trainer " +
+                                    "left join fetch Gym gym " +
+                                    "where trainer.gym.id = :gymId"
+                            , Trainer.class)
+                    .setParameter("gymId", gymID)
+                    .getResultList();
+            manager.getTransaction().commit();
+            return trainers;
         } finally {
             manager.close();
         }
     }
 
-    public List<Trainer> listTrainers() {
-        EntityManager manager = factory.createEntityManager();
+    public void deleteGym(long gymId) {
+        EntityManager entityManager = factory.createEntityManager();
         try {
-            manager.getTransaction().begin();
-            return manager.createQuery(
-                            "select t from Trainer t"
-                            , Trainer.class)
-                    .getResultList();
+            entityManager.getTransaction().begin();
+            Gym gym = entityManager.getReference(Gym.class, gymId);
+            entityManager.remove(gym);
+            entityManager.getTransaction().commit();
         } finally {
-            manager.close();
+            entityManager.close();
         }
     }
 
@@ -105,7 +131,7 @@ public class GymRepository {
         EntityManager manager = factory.createEntityManager();
         try {
             manager.getTransaction().begin();
-            Trainer trainer = findTrainerById(trainerId);
+            Trainer trainer = manager.getReference(Trainer.class, trainerId);
             manager.remove(trainer);
             trainer.getGym().getTrainers().remove(trainer);
             manager.getTransaction().commit();
@@ -118,16 +144,16 @@ public class GymRepository {
         EntityManager manager = factory.createEntityManager();
         try {
             manager.getTransaction().begin();
-            Athlete athlete = findAthleteById(athleteId);
-            manager.remove(athlete);
+            Athlete athlete = manager.find(Athlete.class, athleteId);
             athlete.getGym().getAthletes().remove(athlete);
+            manager.remove(athlete);
             manager.getTransaction().commit();
         } finally {
             manager.close();
         }
     }
 
-    public void deleteAthletesTrainer(long trainerId) {
+    public void deleteTrainersAthlete(long trainerId) {
         EntityManager manager = factory.createEntityManager();
         try {
             manager.getTransaction().begin();
@@ -139,12 +165,17 @@ public class GymRepository {
         }
     }
 
-    public List<Athlete> listAthleteByTrainer(long athleteID) {
+    public List<Athlete> listAthleteByTrainer(long trainerID) {
         EntityManager manager = factory.createEntityManager();
         try {
             manager.getTransaction().begin();
-            return manager.createQuery("select a from Athlete a join fetch a.trainers where a.id = :athleteID", Athlete.class)
-                    .setParameter("id", athleteID)
+            return manager.createQuery(
+                            "select a " +
+                                    "from Athlete a " +
+                                    "left join fetch a.trainers t " +
+                                    "where t.id =:trainerID"
+                            , Athlete.class)
+                    .setParameter("trainerID", trainerID)
                     .getResultList();
         } finally {
             manager.close();
