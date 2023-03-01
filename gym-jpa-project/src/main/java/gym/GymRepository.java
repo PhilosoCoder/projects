@@ -3,7 +3,6 @@ package gym;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -62,7 +61,7 @@ public class GymRepository {
         }
     }
 
-    public Gym findGymWithTrainersByTrainingType(long gymId, TrainingType type) {
+    public Gym findGymWithTrainersByTrainingType(long gymId, TrainingType trainingType) {
         EntityManager manager = factory.createEntityManager();
         try {
             return manager.createQuery(
@@ -70,10 +69,10 @@ public class GymRepository {
                                     "from Gym gym " +
                                     "left join fetch gym.trainers trainers " +
                                     "where trainers.gym.id = :gymId " +
-                                    "and trainers.type = :type"
+                                    "and trainers.type = :trainingType"
                             , Gym.class)
-                    .setParameter("trainerId", gymId)
-                    .setParameter("trainingType", type)
+                    .setParameter("gymId", gymId)
+                    .setParameter("trainingType", trainingType)
                     .getSingleResult();
         } finally {
             manager.close();
@@ -164,7 +163,7 @@ public class GymRepository {
                             , Gym.class)
                     .setParameter("gymId", gymId)
                     .getSingleResult();
-            Set<Trainer> trainers = gym.getTrainers();
+            List<Trainer> trainers = gym.getTrainers();
             manager.createQuery(
                             "select distinct trainer " +
                                     "from Trainer trainer " +

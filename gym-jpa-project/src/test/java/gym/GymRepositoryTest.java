@@ -7,8 +7,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class GymRepositoryTest {
@@ -82,9 +80,9 @@ class GymRepositoryTest {
         Gym gym = new Gym("Functional Gym");
         gymRepository.saveGym(gym);
 
-        Trainer trainer = trainerRepository.saveTrainer(new Trainer("John", TrainingType.FUNCTIONAL));
-        Trainer otherTrainer = trainerRepository.saveTrainer(new Trainer("Jack", TrainingType.FUNCTIONAL));
-        Trainer anotherTrainer = trainerRepository.saveTrainer(new Trainer("Joe", TrainingType.REHAB));
+        Trainer trainer = new Trainer("John", TrainingType.FUNCTIONAL);
+        Trainer otherTrainer = new Trainer("Jack", TrainingType.FUNCTIONAL);
+        Trainer anotherTrainer = new Trainer("Joe", TrainingType.REHAB);
 
         gymRepository.saveTrainerToGym(
                 gym.getId(),
@@ -103,7 +101,7 @@ class GymRepositoryTest {
                 TrainingType.REHAB);
 
         assertEquals(1, result.getTrainers().size());
-        assertTrue(result.getTrainers().contains(anotherTrainer));
+        assertEquals(TrainingType.REHAB, result.getTrainers().get(0).getType());
     }
 
     @Test

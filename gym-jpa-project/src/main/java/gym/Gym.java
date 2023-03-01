@@ -2,7 +2,8 @@ package gym;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,10 +17,10 @@ public class Gym {
     private String name;
 
     @OneToMany(mappedBy = "gym", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private Set<Trainer> trainers = new HashSet<>();
+    private List<Trainer> trainers = new ArrayList<>();
 
     @OneToMany(mappedBy = "gym", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private Set<Athlete> athletes = new HashSet<>();
+    private List<Athlete> athletes = new ArrayList<>();
 
     public Gym() {
     }
@@ -46,19 +47,19 @@ public class Gym {
         this.id = id;
     }
 
-    public Set<Trainer> getTrainers() {
+    public List<Trainer> getTrainers() {
         return trainers;
     }
 
-    public void setTrainers(Set<Trainer> trainers) {
+    public void setTrainers(List<Trainer> trainers) {
         this.trainers = trainers;
     }
 
-    public Set<Athlete> getAthletes() {
+    public List<Athlete> getAthletes() {
         return athletes;
     }
 
-    public void setAthletes(Set<Athlete> athletes) {
+    public void setAthletes(List<Athlete> athletes) {
         this.athletes = athletes;
     }
 
