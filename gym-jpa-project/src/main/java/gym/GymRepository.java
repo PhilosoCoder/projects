@@ -3,6 +3,7 @@ package gym;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -58,6 +59,24 @@ public class GymRepository {
             return em.find(Trainer.class, trainerId);
         } finally {
             em.close();
+        }
+    }
+
+    public Gym findGymWithTrainersByTrainingType(long gymId, TrainingType type) {
+        EntityManager manager = factory.createEntityManager();
+        try {
+            return manager.createQuery(
+                            "select gym " +
+                                    "from Gym gym " +
+                                    "left join fetch gym.trainers trainers " +
+                                    "where trainers.gym.id = :gymId " +
+                                    "and trainers.type = :type"
+                            , Gym.class)
+                    .setParameter("trainerId", gymId)
+                    .setParameter("trainingType", type)
+                    .getSingleResult();
+        } finally {
+            manager.close();
         }
     }
 

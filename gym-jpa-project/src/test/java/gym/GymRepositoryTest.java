@@ -7,6 +7,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class GymRepositoryTest {
@@ -29,6 +31,13 @@ class GymRepositoryTest {
     @AfterEach
     void close() {
         factory.close();
+    }
+
+    @Test
+    void saveTrainer() {
+        Trainer result = trainerRepository.saveTrainer(new Trainer("John", TrainingType.REHAB));
+
+        assertNotNull(result.getId());
     }
 
     @Test
@@ -66,6 +75,35 @@ class GymRepositoryTest {
         trainerRepository.updateTrainerWithPersistedAthlete(trainer.getId(), athlete.getId());
         trainerRepository.updateTrainerWithPersistedAthlete(otherTrainer.getId(), athlete.getId());
         trainerRepository.updateTrainerWithPersistedAthlete(otherTrainer.getId(), otherAthlete.getId());
+    }
+
+    @Test
+    void testFindGymWithTrainersTrainingType() {
+        Gym gym = new Gym("Functional Gym");
+        gymRepository.saveGym(gym);
+
+        Trainer trainer = trainerRepository.saveTrainer(new Trainer("John", TrainingType.FUNCTIONAL));
+        Trainer otherTrainer = trainerRepository.saveTrainer(new Trainer("Jack", TrainingType.FUNCTIONAL));
+        Trainer anotherTrainer = trainerRepository.saveTrainer(new Trainer("Joe", TrainingType.REHAB));
+
+        gymRepository.saveTrainerToGym(
+                gym.getId(),
+                trainer);
+
+        gymRepository.saveTrainerToGym(
+                gym.getId(),
+                otherTrainer);
+
+        gymRepository.saveTrainerToGym(
+                gym.getId(),
+                anotherTrainer);
+
+        Gym result = gymRepository.findGymWithTrainersByTrainingType(
+                gym.getId(),
+                TrainingType.REHAB);
+
+        assertEquals(1, result.getTrainers().size());
+        assertTrue(result.getTrainers().contains(anotherTrainer));
     }
 
     @Test
