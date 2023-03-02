@@ -153,18 +153,6 @@ public class GymRepository {
         }
     }
 
-    public void deleteTrainersAthlete(long trainerId) {
-        EntityManager manager = factory.createEntityManager();
-        try {
-            manager.getTransaction().begin();
-            Trainer trainer = findTrainerById(trainerId);
-            trainer.setGym(null);
-            manager.getTransaction().commit();
-        } finally {
-            manager.close();
-        }
-    }
-
     public List<Athlete> listAthleteByTrainer(long trainerID) {
         EntityManager manager = factory.createEntityManager();
         try {

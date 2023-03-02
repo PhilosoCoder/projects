@@ -15,10 +15,10 @@ public class Gym {
 
     private String name;
 
-    @OneToMany(mappedBy = "gym", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Trainer> trainers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "gym", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Athlete> athletes = new ArrayList<>();
 
     public Gym() {

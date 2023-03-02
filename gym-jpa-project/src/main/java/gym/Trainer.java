@@ -13,7 +13,7 @@ public class Trainer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne()
     private Gym gym;
 
     @ManyToMany(mappedBy = "trainers", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
@@ -36,6 +36,11 @@ public class Trainer {
         athletes.add(athlete);
         athlete.getTrainers().add(this);
         athlete.setTrainer(this);
+    }
+
+    public void removeAthlete(Athlete athlete) {
+        athletes.remove(athlete);
+        athlete.getTrainers().remove(this);
     }
 
     public Long getId() {

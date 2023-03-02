@@ -50,12 +50,13 @@ class GymTrainerRepositoryTest {
     void testSaveAthleteToTrainer() {
         Gym gym = new Gym("Fit Gym");
         gymRepository.saveGym(gym);
+
         Athlete athlete = new Athlete("Jack", TrainingType.FUNCTIONAL);
         gymRepository.saveAthleteToGym(gym.getId(), athlete);
 
         Trainer trainer = gymRepository.saveTrainerToGym(gym.getId(), new Trainer("John", TrainingType.FUNCTIONAL));
-        Athlete otherAthlete = trainerRepository.saveAthleteToTrainer(trainer.getId(), athlete.getId());
 
+        Athlete otherAthlete = trainerRepository.saveAthleteToTrainer(trainer.getId(), athlete.getId());
         Athlete result = gymRepository.findAthleteById(otherAthlete.getId());
 
         assertNotNull(result.getId());
@@ -112,7 +113,7 @@ class GymTrainerRepositoryTest {
     }
 
     @Test
-    void deleteTrainersGym() {
+    void testDeleteTrainersGym() {
         Gym gym = new Gym("Fit Gym");
         Gym otherGym = new Gym("Biggest Gym");
 
@@ -153,26 +154,23 @@ class GymTrainerRepositoryTest {
     }
 
     @Test
-    void testDeleteTrainersAthlete() {
+    void deleteAthleteFromTrainer() {
         Gym gym = new Gym("Fit Gym");
-        Gym otherGym = new Gym("Biggest Gym");
+        gymRepository.saveGym(gym);
 
         Trainer trainer = new Trainer("John", TrainingType.FUNCTIONAL);
-        Trainer otherTrainer = new Trainer("Jack", TrainingType.FUNCTIONAL);
 
         Athlete athlete = new Athlete("Joshua", TrainingType.BODYBUILDING);
         Athlete otherAthlete = new Athlete("Jane", TrainingType.REHAB);
-
-        gymRepository.saveGym(gym);
-        gymRepository.saveGym(otherGym);
 
         trainer.addAthlete(athlete);
         trainer.addAthlete(otherAthlete);
 
         gymRepository.saveTrainerToGym(gym.getId(), trainer);
-        gymRepository.saveTrainerToGym(otherGym.getId(), otherTrainer);
 
-        gymRepository.deleteTrainersAthlete(trainer.getId());
+        trainerRepository.removeAthleteFromTrainer(athlete.getId(), trainer.getId());
+        trainerRepository.removeAthleteFromTrainer(otherAthlete.getId(), trainer.getId());
+        assertEquals(0, trainer.getAthletes().size());
     }
 
     @Test
