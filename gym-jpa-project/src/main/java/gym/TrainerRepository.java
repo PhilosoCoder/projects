@@ -49,7 +49,7 @@ public class TrainerRepository {
         }
     }
 
-    public void removeAthleteFromTrainer(long athleteId, long trainerId) {
+    public Trainer removeAthleteFromTrainer(long athleteId, long trainerId) {
         EntityManager manager = factory.createEntityManager();
         try {
             manager.getTransaction().begin();
@@ -63,6 +63,7 @@ public class TrainerRepository {
             Trainer trainer = manager.find(Trainer.class, trainerId);
             trainer.removeAthlete(athlete);
             manager.getTransaction().commit();
+            return trainer;
         } finally {
             manager.close();
         }

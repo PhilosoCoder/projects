@@ -3,11 +3,18 @@ package gym;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GymRepository {
 
     private EntityManagerFactory factory;
+
+    private PersistenceContextHandler handler;
+
+    public GymRepository(PersistenceContextHandler handler) {
+        this.handler = handler;
+    }
 
     public GymRepository(EntityManagerFactory factory) {
         this.factory = factory;
@@ -120,6 +127,8 @@ public class GymRepository {
         try {
             entityManager.getTransaction().begin();
             Gym gym = entityManager.getReference(Gym.class, gymId);
+            gym.setTrainers(new ArrayList<>());
+            gym.setAthletes(new ArrayList<>());
             entityManager.remove(gym);
             entityManager.getTransaction().commit();
         } finally {

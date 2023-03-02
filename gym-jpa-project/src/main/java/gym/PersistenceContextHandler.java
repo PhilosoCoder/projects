@@ -1,0 +1,36 @@
+package gym;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+
+import java.util.function.Consumer;
+import java.util.function.Function;
+
+public class PersistenceContextHandler {
+
+    private EntityManagerFactory factory;
+
+    public PersistenceContextHandler(EntityManagerFactory entityManagerFactory) {
+        this.factory = entityManagerFactory;
+    }
+
+    public void doInTransaction(Consumer<EntityManager> consumer) {
+        EntityManager manager = factory.createEntityManager();
+        try {
+            manager.getTransaction().begin();
+            consumer.accept(manager);
+            manager.getTransaction().commit();
+        } finally {
+            manager.close();
+        }
+    }
+
+    public <T> T query(Function<EntityManager, T> function) {
+        EntityManager manager = factory.createEntityManager();
+        try {
+            return function.apply(manager);
+        } finally {
+            manager.close();
+        }
+    }
+}

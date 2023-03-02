@@ -168,9 +168,9 @@ class GymTrainerRepositoryTest {
 
         gymRepository.saveTrainerToGym(gym.getId(), trainer);
 
-        trainerRepository.removeAthleteFromTrainer(athlete.getId(), trainer.getId());
-        trainerRepository.removeAthleteFromTrainer(otherAthlete.getId(), trainer.getId());
-        assertEquals(0, trainer.getAthletes().size());
+        Trainer result = trainerRepository.removeAthleteFromTrainer(athlete.getId(), trainer.getId());
+        result = trainerRepository.removeAthleteFromTrainer(otherAthlete.getId(), trainer.getId());
+        assertEquals(0, result.getAthletes().size());
     }
 
     @Test

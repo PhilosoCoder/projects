@@ -13,10 +13,10 @@ public class Trainer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne()
+    @ManyToOne
     private Gym gym;
 
-    @ManyToMany(mappedBy = "trainers", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToMany(mappedBy = "trainers", cascade = {CascadeType.PERSIST})
     private List<Athlete> athletes = new ArrayList<>();
 
     private String name;

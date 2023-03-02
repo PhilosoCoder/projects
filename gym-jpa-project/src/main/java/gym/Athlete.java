@@ -13,7 +13,7 @@ public class Athlete {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToMany(cascade = {CascadeType.PERSIST})
     private Set<Trainer> trainers = new HashSet<>();
 
     @ManyToOne
