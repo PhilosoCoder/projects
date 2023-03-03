@@ -7,6 +7,7 @@ import model.Advertisement;
 import model.User;
 import org.flywaydb.core.Flyway;
 import org.mariadb.jdbc.MariaDbDataSource;
+
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -20,14 +21,18 @@ public class Service extends HttpServlet {
 
     public Service() {
         MariaDbDataSource dataSource = createDataSource();
+
         configureFlyway(dataSource);
+
         this.userRepository = new UserRepository(dataSource);
         this.advertisementRepository = new AdvertisementRepository(dataSource);
     }
 
     public Service(UserRepository userRepository, AdvertisementRepository advertisementRepository) {
         MariaDbDataSource dataSource = createDataSource();
+
         configureFlyway(dataSource);
+
         this.userRepository = userRepository;
         this.advertisementRepository = advertisementRepository;
     }
@@ -37,9 +42,14 @@ public class Service extends HttpServlet {
     }
 
     public Map<String, List<Advertisement>> listAdvertisementsByUsers() {
-        return listUsers().stream()
-                .collect(Collectors.toMap(User::getName,
-                        user -> advertisementRepository.listAdvertisementsByUser(user.getId())));
+        return listUsers()
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                User::getName,
+                                user -> advertisementRepository
+                                        .listAdvertisementsByUser(
+                                                user.getId())));
     }
 
     private MariaDbDataSource createDataSource() {
@@ -56,6 +66,7 @@ public class Service extends HttpServlet {
 
     private void configureFlyway(MariaDbDataSource dataSource) {
         Flyway flyway = Flyway.configure().cleanDisabled(false).dataSource(dataSource).load();
+
         flyway.clean();
         flyway.migrate();
     }
