@@ -176,12 +176,8 @@ public class GymRepository {
         EntityManager manager = factory.createEntityManager();
         try {
             manager.getTransaction().begin();
-            Gym gym = manager.getReference(Gym.class, gymId);
+            Gym gym = manager.find(Gym.class, gymId);
             manager.remove(gym);
-           manager.createQuery(
-                            "delete Gym g where g.id = :gymId")
-                    .setParameter("gymId", gymId)
-                            .executeUpdate();
             manager.getTransaction().commit();
         } finally {
             manager.close();
