@@ -15,13 +15,13 @@ public class PersistenceContextHandler {
     }
 
     public void doInTransaction(Consumer<EntityManager> consumer) {
-        EntityManager manager = factory.createEntityManager();
+        EntityManager e = factory.createEntityManager();
         try {
-            manager.getTransaction().begin();
-            consumer.accept(manager);
-            manager.getTransaction().commit();
+            e.getTransaction().begin();
+            consumer.accept(e);
+            e.getTransaction().commit();
         } finally {
-            manager.close();
+            e.close();
         }
     }
 

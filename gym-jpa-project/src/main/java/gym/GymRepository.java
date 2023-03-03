@@ -32,6 +32,10 @@ public class GymRepository {
         }
     }
 
+    public void saveGymLambda(Gym gym) {
+        handler.doInTransaction(e -> e.persist(gym));
+    }
+
     public Athlete saveAthleteToGym(long gymId, Athlete athlete) {
         EntityManager manager = factory.createEntityManager();
         try {
@@ -58,12 +62,21 @@ public class GymRepository {
         }
     }
 
-    public Trainer findTrainerById(long trainerId) {
-        EntityManager em = factory.createEntityManager();
+    public Gym findGymById(long gymId) {
+        EntityManager manager = factory.createEntityManager();
         try {
-            return em.find(Trainer.class, trainerId);
+            return manager.find(Gym.class, gymId);
         } finally {
-            em.close();
+            manager.close();
+        }
+    }
+
+    public Trainer findTrainerById(long trainerId) {
+        EntityManager manager = factory.createEntityManager();
+        try {
+            return manager.find(Trainer.class, trainerId);
+        } finally {
+            manager.close();
         }
     }
 
@@ -71,15 +84,6 @@ public class GymRepository {
         EntityManager manager = factory.createEntityManager();
         try {
             return manager.find(Athlete.class, athleteId);
-        } finally {
-            manager.close();
-        }
-    }
-
-    public Gym findGymById(long gymId) {
-        EntityManager manager = factory.createEntityManager();
-        try {
-            return manager.find(Gym.class, gymId);
         } finally {
             manager.close();
         }
@@ -98,82 +102,6 @@ public class GymRepository {
                     .setParameter("gymId", gymId)
                     .setParameter("trainingType", trainingType)
                     .getSingleResult();
-        } finally {
-            manager.close();
-        }
-    }
-
-    public List<Trainer> listTrainersOfGym(long gymID) {
-        EntityManager manager = factory.createEntityManager();
-        try {
-            manager.getTransaction().begin();
-            List<Trainer> trainers = manager.createQuery(
-                            "select trainer " +
-                                    "from Trainer trainer " +
-                                    "left join fetch Gym gym " +
-                                    "where trainer.gym.id = :gymId"
-                            , Trainer.class)
-                    .setParameter("gymId", gymID)
-                    .getResultList();
-            manager.getTransaction().commit();
-            return trainers;
-        } finally {
-            manager.close();
-        }
-    }
-
-    public void deleteGym(long gymId) {
-        EntityManager entityManager = factory.createEntityManager();
-        try {
-            entityManager.getTransaction().begin();
-            Gym gym = entityManager.getReference(Gym.class, gymId);
-            gym.setTrainers(new ArrayList<>());
-            gym.setAthletes(new ArrayList<>());
-            entityManager.remove(gym);
-            entityManager.getTransaction().commit();
-        } finally {
-            entityManager.close();
-        }
-    }
-
-    public void deleteTrainer(long trainerId) {
-        EntityManager manager = factory.createEntityManager();
-        try {
-            manager.getTransaction().begin();
-            Trainer trainer = manager.getReference(Trainer.class, trainerId);
-            manager.remove(trainer);
-            trainer.getGym().getTrainers().remove(trainer);
-            manager.getTransaction().commit();
-        } finally {
-            manager.close();
-        }
-    }
-
-    public void deleteAthlete(long athleteId) {
-        EntityManager manager = factory.createEntityManager();
-        try {
-            manager.getTransaction().begin();
-            Athlete athlete = manager.find(Athlete.class, athleteId);
-            athlete.getGym().getAthletes().remove(athlete);
-            manager.remove(athlete);
-            manager.getTransaction().commit();
-        } finally {
-            manager.close();
-        }
-    }
-
-    public List<Athlete> listAthleteByTrainer(long trainerID) {
-        EntityManager manager = factory.createEntityManager();
-        try {
-            manager.getTransaction().begin();
-            return manager.createQuery(
-                            "select a " +
-                                    "from Athlete a " +
-                                    "left join fetch a.trainers t " +
-                                    "where t.id =:trainerID"
-                            , Athlete.class)
-                    .setParameter("trainerID", trainerID)
-                    .getResultList();
         } finally {
             manager.close();
         }
@@ -203,6 +131,84 @@ public class GymRepository {
                     .getResultList();
             manager.getTransaction().commit();
             return gym;
+        } finally {
+            manager.close();
+        }
+    }
+
+    public List<Trainer> listTrainersOfGym(long gymID) {
+        EntityManager manager = factory.createEntityManager();
+        try {
+            manager.getTransaction().begin();
+            List<Trainer> trainers = manager.createQuery(
+                            "select trainer " +
+                                    "from Trainer trainer " +
+                                    "left join fetch Gym gym " +
+                                    "where trainer.gym.id = :gymId"
+                            , Trainer.class)
+                    .setParameter("gymId", gymID)
+                    .getResultList();
+            manager.getTransaction().commit();
+            return trainers;
+        } finally {
+            manager.close();
+        }
+    }
+
+    public List<Athlete> listAthleteByTrainer(long trainerID) {
+        EntityManager manager = factory.createEntityManager();
+        try {
+            manager.getTransaction().begin();
+            return manager.createQuery(
+                            "select a " +
+                                    "from Athlete a " +
+                                    "left join fetch a.trainers t " +
+                                    "where t.id =:trainerID"
+                            , Athlete.class)
+                    .setParameter("trainerID", trainerID)
+                    .getResultList();
+        } finally {
+            manager.close();
+        }
+    }
+
+    public void deleteGym(long gymId) {
+        EntityManager manager = factory.createEntityManager();
+        try {
+            manager.getTransaction().begin();
+            Gym gym = manager.getReference(Gym.class, gymId);
+            manager.remove(gym);
+           manager.createQuery(
+                            "delete Gym g where g.id = :gymId")
+                    .setParameter("gymId", gymId)
+                            .executeUpdate();
+            manager.getTransaction().commit();
+        } finally {
+            manager.close();
+        }
+    }
+
+    public void deleteTrainer(long trainerId) {
+        EntityManager manager = factory.createEntityManager();
+        try {
+            manager.getTransaction().begin();
+            Trainer trainer = manager.getReference(Trainer.class, trainerId);
+            manager.remove(trainer);
+            trainer.getGym().getTrainers().remove(trainer);
+            manager.getTransaction().commit();
+        } finally {
+            manager.close();
+        }
+    }
+
+    public void deleteAthlete(long athleteId) {
+        EntityManager manager = factory.createEntityManager();
+        try {
+            manager.getTransaction().begin();
+            Athlete athlete = manager.find(Athlete.class, athleteId);
+            athlete.getGym().getAthletes().remove(athlete);
+            manager.remove(athlete);
+            manager.getTransaction().commit();
         } finally {
             manager.close();
         }

@@ -27,11 +27,11 @@ public class TrainerRepository {
     }
 
     public Trainer findTrainerById(long trainerId) {
-        EntityManager em = factory.createEntityManager();
+        EntityManager manager = factory.createEntityManager();
         try {
-            return em.find(Trainer.class, trainerId);
+            return manager.find(Trainer.class, trainerId);
         } finally {
-            em.close();
+            manager.close();
         }
     }
 

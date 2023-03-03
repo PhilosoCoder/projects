@@ -6,7 +6,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class GymTrainerRepositoryTest {
 
@@ -29,6 +32,14 @@ class GymTrainerRepositoryTest {
     }
 
     @Test
+    void testSaveGym() {
+        Gym gym = new Gym("Fit Gym");
+        gymRepository.saveGym(gym);
+
+        assertNotNull(gym.getId());
+    }
+
+    @Test
     void saveTrainerToGym() {
         Gym gym = new Gym("Fit Gym");
         gymRepository.saveGym(gym);
@@ -44,6 +55,8 @@ class GymTrainerRepositoryTest {
         gymRepository.saveGym(gym);
 
         Athlete athlete = gymRepository.saveAthleteToGym(gym.getId(), new Athlete("Joe", TrainingType.BODYBUILDING));
+
+        assertNotNull(athlete.getGym());
     }
 
     @Test
@@ -83,6 +96,122 @@ class GymTrainerRepositoryTest {
         trainerRepository.updateTrainerWithPersistedAthlete(trainer.getId(), athlete.getId());
         trainerRepository.updateTrainerWithPersistedAthlete(otherTrainer.getId(), athlete.getId());
         trainerRepository.updateTrainerWithPersistedAthlete(otherTrainer.getId(), otherAthlete.getId());
+    }
+
+    @Test
+    void testFindGymWithTrainersTrainingType() {
+        Gym gym = new Gym("Functional Gym");
+        gymRepository.saveGym(gym);
+
+        Trainer trainer = new Trainer("John", TrainingType.FUNCTIONAL);
+        Trainer otherTrainer = new Trainer("Jack", TrainingType.FUNCTIONAL);
+        Trainer anotherTrainer = new Trainer("Joe", TrainingType.REHAB);
+
+        gymRepository.saveTrainerToGym(
+                gym.getId(),
+                trainer);
+
+        gymRepository.saveTrainerToGym(
+                gym.getId(),
+                otherTrainer);
+
+        gymRepository.saveTrainerToGym(
+                gym.getId(),
+                anotherTrainer);
+
+        Gym result = gymRepository.findGymWithTrainersByTrainingType(
+                gym.getId(),
+                TrainingType.REHAB);
+
+        assertEquals(1, result.getTrainers().size());
+        assertEquals(TrainingType.REHAB, result.getTrainers().get(0).getType());
+    }
+
+    @Test
+    void testFindGymWithTrainersAndAthletes() {
+        Gym gym = new Gym("Fit Gym");
+        Gym otherGym = new Gym("Biggest Gym");
+
+        Trainer trainer = new Trainer("John", TrainingType.FUNCTIONAL);
+        Trainer otherTrainer = new Trainer("Jack", TrainingType.FUNCTIONAL);
+
+        Athlete athlete = new Athlete("Joshua", TrainingType.BODYBUILDING);
+        Athlete otherAthlete = new Athlete("Jane", TrainingType.REHAB);
+
+        gymRepository.saveGym(gym);
+        gymRepository.saveGym(otherGym);
+
+        trainer.addAthlete(athlete);
+        trainer.addAthlete(otherAthlete);
+
+        gymRepository.saveTrainerToGym(gym.getId(), trainer);
+        gymRepository.saveTrainerToGym(otherGym.getId(), otherTrainer);
+
+        trainerRepository.saveAthleteToTrainer(trainer.getId(), athlete.getId());
+        trainerRepository.saveAthleteToTrainer(otherTrainer.getId(), otherAthlete.getId());
+
+        trainerRepository.updateTrainerWithPersistedAthlete(otherTrainer.getId(), otherAthlete.getId());
+
+        System.out.println(gymRepository.findGymWithTrainersAndAthletes(1L));
+    }
+
+    @Test
+    void testListTrainersOfGym() {
+        Gym gym = new Gym("Fit Gym");
+        Gym otherGym = new Gym("Biggest Gym");
+
+        Trainer trainer = new Trainer("John", TrainingType.FUNCTIONAL);
+        Trainer otherTrainer = new Trainer("Jack", TrainingType.FUNCTIONAL);
+
+        gymRepository.saveGym(gym);
+        gymRepository.saveGym(otherGym);
+
+        gymRepository.saveTrainerToGym(gym.getId(), trainer);
+        gymRepository.saveTrainerToGym(gym.getId(), otherTrainer);
+
+        List<Trainer> gymTrainers = gymRepository.listTrainersOfGym(gym.getId());
+        List<Trainer> otherGymTrainers = gymRepository.listTrainersOfGym(otherGym.getId());
+
+        assertThat(gymTrainers)
+                .hasSize(2)
+                .extracting(Trainer::getName)
+                .containsExactly("John", "Jack");
+        assertEquals(0, otherGymTrainers.size());
+    }
+
+    @Test
+    void testListAthletesByTrainer() {
+        Gym gym = new Gym("Fit Gym");
+        gymRepository.saveGym(gym);
+
+        Trainer trainer = new Trainer("John", TrainingType.FUNCTIONAL);
+        Trainer otherTrainer = new Trainer("Jack", TrainingType.FUNCTIONAL);
+
+        Athlete athlete = new Athlete("Joshua", TrainingType.BODYBUILDING);
+        Athlete otherAthlete = new Athlete("Jane", TrainingType.REHAB);
+
+        gymRepository.saveTrainerToGym(gym.getId(), trainer);
+        gymRepository.saveTrainerToGym(gym.getId(), otherTrainer);
+
+        gymRepository.saveAthleteToGym(gym.getId(), athlete);
+        gymRepository.saveAthleteToGym(gym.getId(), otherAthlete);
+
+        trainerRepository.saveAthleteToTrainer(trainer.getId(), athlete.getId());
+        trainerRepository.saveAthleteToTrainer(trainer.getId(), otherAthlete.getId());
+
+        trainerRepository.updateTrainerWithPersistedAthlete(otherTrainer.getId(), otherAthlete.getId());
+
+        List<Athlete> trainerAthletes = gymRepository.listAthleteByTrainer(trainer.getId());
+        List<Athlete> otherTrainerAthletes = gymRepository.listAthleteByTrainer(otherTrainer.getId());
+
+        assertThat(trainerAthletes)
+                .hasSize(2)
+                .extracting(Athlete::getName)
+                .containsExactly("Joshua", "Jane");
+        assertThat(otherTrainerAthletes)
+                .hasSize(1)
+                .extracting(Athlete::getName)
+                .containsExactly("Jane");
     }
 
     @Test
@@ -185,106 +314,5 @@ class GymTrainerRepositoryTest {
         gymRepository.saveTrainerToGym(gym.getId(), otherTrainer);
 
         gymRepository.deleteTrainer(trainer.getId());
-    }
-
-    @Test
-    void testFindTrainersOfGym() {
-        Gym gym = new Gym("Fit Gym");
-        Gym otherGym = new Gym("Biggest Gym");
-
-        Trainer trainer = new Trainer("John", TrainingType.FUNCTIONAL);
-        Trainer otherTrainer = new Trainer("Jack", TrainingType.FUNCTIONAL);
-
-        gymRepository.saveGym(gym);
-        gymRepository.saveGym(otherGym);
-
-        gymRepository.saveTrainerToGym(gym.getId(), trainer);
-        gymRepository.saveTrainerToGym(gym.getId(), otherTrainer);
-
-        assertEquals(2, gymRepository.listTrainersOfGym(gym.getId()).size());
-        assertEquals(0, gymRepository.listTrainersOfGym(otherGym.getId()).size());
-    }
-
-    @Test
-    void testFindTrainersAndAthletes() {
-        Gym gym = new Gym("Fit Gym");
-        Gym otherGym = new Gym("Biggest Gym");
-
-        Trainer trainer = new Trainer("John", TrainingType.FUNCTIONAL);
-        Trainer otherTrainer = new Trainer("Jack", TrainingType.FUNCTIONAL);
-
-        Athlete athlete = new Athlete("Joshua", TrainingType.BODYBUILDING);
-        Athlete otherAthlete = new Athlete("Jane", TrainingType.REHAB);
-
-        gymRepository.saveGym(gym);
-        gymRepository.saveGym(otherGym);
-
-        trainer.addAthlete(athlete);
-        trainer.addAthlete(otherAthlete);
-
-        gymRepository.saveTrainerToGym(gym.getId(), trainer);
-        gymRepository.saveTrainerToGym(otherGym.getId(), otherTrainer);
-
-        trainerRepository.saveAthleteToTrainer(trainer.getId(), athlete.getId());
-        trainerRepository.saveAthleteToTrainer(otherTrainer.getId(), otherAthlete.getId());
-
-        trainerRepository.updateTrainerWithPersistedAthlete(otherTrainer.getId(), otherAthlete.getId());
-
-        System.out.println(gymRepository.findGymWithTrainersAndAthletes(1L));
-    }
-
-    @Test
-    void testFindAthletesByTrainer() {
-        Gym gym = new Gym("Fit Gym");
-        gymRepository.saveGym(gym);
-
-        Trainer trainer = new Trainer("John", TrainingType.FUNCTIONAL);
-        Trainer otherTrainer = new Trainer("Jack", TrainingType.FUNCTIONAL);
-
-        Athlete athlete = new Athlete("Joshua", TrainingType.BODYBUILDING);
-        Athlete otherAthlete = new Athlete("Jane", TrainingType.REHAB);
-
-        gymRepository.saveTrainerToGym(gym.getId(), trainer);
-        gymRepository.saveTrainerToGym(gym.getId(), otherTrainer);
-
-        gymRepository.saveAthleteToGym(gym.getId(), athlete);
-        gymRepository.saveAthleteToGym(gym.getId(), otherAthlete);
-
-        trainerRepository.saveAthleteToTrainer(trainer.getId(), athlete.getId());
-        trainerRepository.saveAthleteToTrainer(trainer.getId(), otherAthlete.getId());
-
-        trainerRepository.updateTrainerWithPersistedAthlete(otherTrainer.getId(), otherAthlete.getId());
-
-        assertEquals(2, gymRepository.listAthleteByTrainer(trainer.getId()).size());
-        assertEquals(1, gymRepository.listAthleteByTrainer(otherTrainer.getId()).size());
-    }
-
-    @Test
-    void testFindGymWithTrainersTrainingType() {
-        Gym gym = new Gym("Functional Gym");
-        gymRepository.saveGym(gym);
-
-        Trainer trainer = new Trainer("John", TrainingType.FUNCTIONAL);
-        Trainer otherTrainer = new Trainer("Jack", TrainingType.FUNCTIONAL);
-        Trainer anotherTrainer = new Trainer("Joe", TrainingType.REHAB);
-
-        gymRepository.saveTrainerToGym(
-                gym.getId(),
-                trainer);
-
-        gymRepository.saveTrainerToGym(
-                gym.getId(),
-                otherTrainer);
-
-        gymRepository.saveTrainerToGym(
-                gym.getId(),
-                anotherTrainer);
-
-        Gym result = gymRepository.findGymWithTrainersByTrainingType(
-                gym.getId(),
-                TrainingType.REHAB);
-
-        assertEquals(1, result.getTrainers().size());
-        assertEquals(TrainingType.REHAB, result.getTrainers().get(0).getType());
     }
 }
