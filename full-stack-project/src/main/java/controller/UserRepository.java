@@ -20,7 +20,7 @@ public class UserRepository {
                         "from users",
                 (rs, rowNum) ->
                         new User(
-                        rs.getLong("id"),
-                        rs.getString("name")));
+                                rs.getLong("id"),
+                                rs.getString("name")));
     }
 }
