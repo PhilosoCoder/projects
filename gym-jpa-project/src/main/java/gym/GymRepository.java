@@ -3,19 +3,11 @@ package gym;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class GymRepository {
 
     private EntityManagerFactory factory;
-
-    private PersistenceContextHandler handler;
-
-    public GymRepository(PersistenceContextHandler handler) {
-        this.handler = handler;
-    }
 
     public GymRepository(EntityManagerFactory factory) {
         this.factory = factory;
@@ -32,10 +24,6 @@ public class GymRepository {
             manager.close();
         }
     }
-
-//    public <T> Object saveGymLambda(Gym gym) {
-//        return handler.query(e -> e.persist(gym));
-//    }
 
     public Athlete saveAthleteToGym(long gymId, Athlete athlete) {
         EntityManager manager = factory.createEntityManager();

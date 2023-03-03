@@ -3,8 +3,6 @@ package gym;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class TrainerRepository {
 

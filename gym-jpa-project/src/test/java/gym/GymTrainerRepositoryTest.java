@@ -70,10 +70,9 @@ class GymTrainerRepositoryTest {
         Trainer trainer = gymRepository.saveTrainerToGym(gym.getId(), new Trainer("John", TrainingType.FUNCTIONAL));
 
         Athlete otherAthlete = trainerRepository.saveAthleteToTrainer(trainer.getId(), athlete.getId());
-        Athlete result = gymRepository.findAthleteById(otherAthlete.getId());
 
-        assertNotNull(result.getId());
-        //assertEquals("John", result.getTrainers().getName());
+        assertNotNull(otherAthlete.getId());
+        assertEquals("John", otherAthlete.getTrainers().get(0).getName());
     }
 
     @Test
@@ -119,10 +118,11 @@ class GymTrainerRepositoryTest {
                 gym.getId(),
                 anotherTrainer);
 
-        Gym result = gymRepository.findGymWithTrainersByTrainingType(
-                gym.getId(),
-                TrainingType.REHAB);
+//        Gym result = gymRepository.findGymWithTrainersByTrainingType(
+//                gym.getId(),
+//                TrainingType.REHAB);
 
+        Gym result = gymRepository.findGymWithTrainersByTrainingType(gym.getId(), TrainingType.REHAB);
         assertEquals(1, result.getTrainers().size());
         assertEquals(TrainingType.REHAB, result.getTrainers().get(0).getType());
     }

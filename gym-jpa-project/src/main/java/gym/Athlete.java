@@ -3,9 +3,7 @@ package gym;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "athletes")
@@ -15,7 +13,7 @@ public class Athlete {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(mappedBy = "athletes", cascade = {CascadeType.PERSIST})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Trainer> trainers = new ArrayList<>();
 
     @ManyToOne

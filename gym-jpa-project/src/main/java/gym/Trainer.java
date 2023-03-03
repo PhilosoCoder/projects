@@ -16,7 +16,7 @@ public class Trainer {
     @ManyToOne
     private Gym gym;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST})
+    @ManyToMany(mappedBy = "trainers", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Athlete> athletes = new ArrayList<>();
 
     private String name;
