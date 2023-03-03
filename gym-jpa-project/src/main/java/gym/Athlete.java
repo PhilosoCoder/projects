@@ -13,14 +13,11 @@ public class Athlete {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST})
+    @ManyToMany(mappedBy = "athletes", cascade = {CascadeType.PERSIST})
     private Set<Trainer> trainers = new HashSet<>();
 
     @ManyToOne
     private Gym gym;
-
-    @ManyToOne
-    private Trainer trainer;
 
     private String name;
 
@@ -78,13 +75,5 @@ public class Athlete {
 
     public void setType(TrainingType type) {
         this.type = type;
-    }
-
-    public Trainer getTrainer() {
-        return trainer;
-    }
-
-    public void setTrainer(Trainer trainer) {
-        this.trainer = trainer;
     }
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManagerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GymRepository {
 
@@ -32,9 +33,9 @@ public class GymRepository {
         }
     }
 
-    public void saveGymLambda(Gym gym) {
-        handler.doInTransaction(e -> e.persist(gym));
-    }
+//    public <T> Object saveGymLambda(Gym gym) {
+//        return handler.query(e -> e.persist(gym));
+//    }
 
     public Athlete saveAthleteToGym(long gymId, Athlete athlete) {
         EntityManager manager = factory.createEntityManager();
