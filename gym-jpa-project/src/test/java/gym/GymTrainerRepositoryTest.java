@@ -92,6 +92,8 @@ class GymTrainerRepositoryTest {
         gymRepository.saveTrainerToGym(gym.getId(), trainer);
         gymRepository.saveTrainerToGym(gym.getId(), otherTrainer);
 
+        trainerRepository.saveAthleteToTrainer(otherTrainer.getId(), athlete.getId());
+
         trainerRepository.updateTrainerWithPersistedAthlete(trainer.getId(), athlete.getId());
         trainerRepository.updateTrainerWithPersistedAthlete(otherTrainer.getId(), athlete.getId());
         trainerRepository.updateTrainerWithPersistedAthlete(otherTrainer.getId(), otherAthlete.getId());
@@ -151,7 +153,9 @@ class GymTrainerRepositoryTest {
 
         trainerRepository.updateTrainerWithPersistedAthlete(otherTrainer.getId(), otherAthlete.getId());
 
-        System.out.println(gymRepository.findGymWithTrainersAndAthletes(1L));
+        Gym result = gymRepository.findGymWithTrainersAndAthletes(1L);
+        assertEquals(1, result.getId());
+        assertNotNull(result.getId());
     }
 
     @Test
@@ -207,6 +211,7 @@ class GymTrainerRepositoryTest {
                 .hasSize(2)
                 .extracting(Athlete::getName)
                 .containsExactly("Joshua", "Jane");
+
         assertThat(otherTrainerAthletes)
                 .hasSize(1)
                 .extracting(Athlete::getName)
@@ -238,6 +243,7 @@ class GymTrainerRepositoryTest {
         trainerRepository.updateTrainerWithPersistedAthlete(otherTrainer.getId(), athlete.getId());
 
         gymRepository.deleteGym(gym.getId());
+        assertNull(gymRepository.findGymById(gym.getId()));
     }
 
     @Test
@@ -279,6 +285,11 @@ class GymTrainerRepositoryTest {
         gymRepository.saveAthleteToGym(gym.getId(), anotherAthlete);
 
         gymRepository.deleteAthlete(athlete.getId());
+
+        assertNull(gymRepository.findAthleteById(athlete.getId()));
+
+        assertNotNull(gymRepository.findAthleteById(otherAthlete.getId()));
+        assertNotNull(gymRepository.findAthleteById(anotherAthlete.getId()));
     }
 
     @Test
@@ -313,5 +324,7 @@ class GymTrainerRepositoryTest {
         gymRepository.saveTrainerToGym(gym.getId(), otherTrainer);
 
         gymRepository.deleteTrainer(trainer.getId());
+
+        assertNull(gymRepository.findTrainerById(trainer.getId()));
     }
 }
