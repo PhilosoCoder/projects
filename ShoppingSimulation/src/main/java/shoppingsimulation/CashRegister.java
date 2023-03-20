@@ -9,52 +9,34 @@ public class CashRegister {
 
     private int cash;
 
-    private int balance;
+    public CashRegister(int cash) {
+        this.cash = cash;
+    }
 
-    private Cashier cashier;
+    public CashRegister(Long id, int cash) {
+        this.id = id;
+        this.cash = cash;
+    }
 
-    private Customer customer;
-
-    private Shop shop;
-
-    public int findProductsPriceByBarCode(List<String> barCodes) {
-        List<Product> products = findProductByBarCode(barCodes);
+    public int sumProductsPriceByBarCode(List<String> barCodes, List<Product> products) {
+        List<Product> result = findProductByBarCode(barCodes, products);
         int sum = 0;
-        for (Product p : products) {
+        for (Product p : result) {
             sum += p.getPrice();
         }
         return sum;
     }
 
-    private List<Product> findProductByBarCode(List<String> barCodes) {
-        List<Product> actualProducts = shop.getProducts();
+    private List<Product> findProductByBarCode(List<String> barCodes, List<Product> products) {
         List<Product> result = new ArrayList<>();
         for (String s : barCodes) {
-            for (Product p : actualProducts) {
+            for (Product p : products) {
                 if (s.equals(p.getBarCode())) {
                     result.add(p);
                 }
             }
         }
         return result;
-    }
-
-
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public void setCashier(Cashier cashier) {
-        this.cashier = cashier;
-    }
-
-    public void setShop(Shop shop) {
-        this.shop = shop;
     }
 
     public int getCash() {

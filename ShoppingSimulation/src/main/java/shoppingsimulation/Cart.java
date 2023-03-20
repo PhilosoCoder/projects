@@ -14,7 +14,7 @@ public class Cart {
         products.add(product);
     }
 
-    private Product getProductByName(String productName) {
+    public Product getProductByName(String productName) {
         Product result = null;
         for (Product p : shop.getProducts()) {
             if (p.getName().equals(productName)) {
@@ -24,11 +24,21 @@ public class Cart {
         return result;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public Product getProductByBarCode(String barCode) {
+        Product result = null;
+        for (Product p : shop.getProducts()) {
+            if (p.getBarCode().equals(barCode)) {
+                result = p;
+            }
+        }
+        return result;
     }
 
     public void setShop(Shop shop) {
         this.shop = shop;
+    }
+
+    public List<Product> getProducts() {
+        return products;
     }
 }

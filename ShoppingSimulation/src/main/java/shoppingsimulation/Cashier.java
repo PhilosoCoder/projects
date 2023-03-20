@@ -1,43 +1,35 @@
 package shoppingsimulation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Cashier {
 
     private Long id;
-
-    private String name;
 
     private CashRegister cashRegister;
 
     private Customer customer;
 
-    private List<Product> actualProductsOfCustomer;
+    public Cashier() {
+    }
 
-    public List<Product> takeProductsFromCustomer(List<Product> products) {
-        actualProductsOfCustomer = products;
+    public Cashier(Long id) {
+        this.id = id;
+    }
+
+    public void takeProductsFromCustomer(Cart cart) {
         customer.setCart(null);
-        customer.setHasCart(false);
-        return actualProductsOfCustomer;
     }
 
-    public List<String> readBarCodes() {
-        List<String> barCodes = new ArrayList<>();
-//        for (Product p : actualProductsOfCustomer) {
-//            barCodes.add(p.getBarCode());
-//        }
-        return barCodes;
+    public String readBarCodes() {
+        return "Content of cart";
     }
 
-    public String askTheCustomerToPay(PayType type, int amount) {
-        if (type.equals(PayType.CASH)) {
-            if (customer.checkTheAmountOfWallet(amount)) {
-                customer.setBalance(customer.getBalance() - amount);
-                cashRegister.setCash(cashRegister.getCash() + amount);
-            }
-        }
-        return "";
+    public String putCashToCashRegister(int amount) {
+        cashRegister.setCash(cashRegister.getCash() + amount);
+        return "Receipt: " + amount;
+    }
+
+    public String askCostumerToPay(PayType type, int totalAmount) {
+        return "Please pay " + totalAmount;
     }
 
     public void setCustomer(Customer customer) {
