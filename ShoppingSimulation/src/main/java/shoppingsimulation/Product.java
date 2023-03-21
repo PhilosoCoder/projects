@@ -10,10 +10,6 @@ public class Product {
 
     private int price;
 
-    public Long getId() {
-        return id;
-    }
-
     public Product(String name, String barCode, int price) {
         this.name = name;
         this.barCode = barCode;

@@ -1,5 +1,8 @@
 package shoppingsimulation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Cashier {
 
     private Long id;
@@ -19,8 +22,8 @@ public class Cashier {
         customer.setCart(null);
     }
 
-    public String readBarCodes() {
-        return "Content of cart";
+    public List<String> readBarCodes() {
+        return new ArrayList<>(List.of("Content of cart"));
     }
 
     public String putCashToCashRegister(int amount) {
@@ -28,7 +31,7 @@ public class Cashier {
         return "Receipt: " + amount;
     }
 
-    public String askCostumerToPay(PayType type, int totalAmount) {
+    public String askCustomerToPay(int totalAmount) {
         return "Please pay " + totalAmount;
     }
 
@@ -40,3 +43,4 @@ public class Cashier {
         this.cashRegister = cashRegister;
     }
 }
+

@@ -33,7 +33,7 @@ class CashierTest {
 
     @Test
     void askTheConsumerToPay() {
-        String result = cashier.askCostumerToPay(PayType.CASH, 200);
+        String result = cashier.askCustomerToPay(200);
 
         assertEquals("Please pay 200", result);
     }

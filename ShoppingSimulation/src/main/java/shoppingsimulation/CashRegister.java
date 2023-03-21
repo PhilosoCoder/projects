@@ -30,13 +30,17 @@ public class CashRegister {
     private List<Product> findProductByBarCode(List<String> barCodes, List<Product> products) {
         List<Product> result = new ArrayList<>();
         for (String s : barCodes) {
-            for (Product p : products) {
-                if (s.equals(p.getBarCode())) {
-                    result.add(p);
-                }
-            }
+            addProductByFilter(products, result, s);
         }
         return result;
+    }
+
+    private void addProductByFilter(List<Product> products, List<Product> result, String s) {
+        for (Product p : products) {
+            if (s.equals(p.getBarCode())) {
+                result.add(p);
+            }
+        }
     }
 
     public int getCash() {
@@ -47,3 +51,4 @@ public class CashRegister {
         this.cash = cash;
     }
 }
+
