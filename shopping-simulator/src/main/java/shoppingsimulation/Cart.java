@@ -5,9 +5,18 @@ import java.util.List;
 
 public class Cart {
 
+    private Long id;
+
     private Shop shop;
 
     private List<Product> products = new ArrayList<>();
+
+    public Cart() {
+    }
+
+    public Cart(Long id) {
+        this.id = id;
+    }
 
     public void addProduct(String productName) {
         Product product = getProductByName(productName);
