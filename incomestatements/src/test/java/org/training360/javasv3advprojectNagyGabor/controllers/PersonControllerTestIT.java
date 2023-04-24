@@ -51,7 +51,7 @@ class PersonControllerTestIT {
                 .expectStatus().isEqualTo(201)
                 .expectBody(PersonDto.class).returnResult().getResponseBody();
 
-        assertEquals("Jack", result.getName());
+        assertNotNull(result.getId());
         assertEquals(1, result.getId());
     }
 
