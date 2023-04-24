@@ -1,0 +1,99 @@
+### create Person
+POST http://localhost:8080/api/people
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "John"
+}
+
+### add income to person
+POST http://localhost:8080/api/people/1/incomes
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title" : "loan",
+  "amount": 40000,
+  "expenseType": "LOAN",
+  "date": "2022-10-11"
+}
+
+### add expense to person
+POST http://localhost:8080/api/people/2/expenses
+Accept: application/json
+Content-Type: application/json
+
+{
+"title" : "loan",
+"amount": 40000,
+"expenseType": "LOAN",
+"date": "2022-10-11"
+}
+
+### create Expense
+POST http://localhost:8080/api/expenses
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title" : "rent",
+  "amount": 30000,
+  "expenseType": "RENT",
+  "date": "2022-10-11"
+}
+
+### create Income
+POST http://localhost:8080/api/incomes
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title" : "rent",
+  "amount": 30000,
+  "incomeType": "RENT",
+  "date": "2022-10-11"
+}
+
+### change amount of income by id
+PUT http://localhost:8080/api/incomes/1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "amount": 4000
+}
+
+### add income to person
+POST http://localhost:8080/api/people/1/incomes
+Content-Type: application/json
+
+{
+  "title" : "rent",
+  "amount": 30000,
+  "incomeType": "RENT",
+  "date": "2022-10-11"
+}
+
+### get expenses
+GET http://localhost:8080/api/expenses
+Content-Type: application/json
+
+### get expenses by id
+GET http://localhost:8080/api/expenses/1
+Content-Type: application/json
+
+### get incomes
+GET http://localhost:8080/api/incomes
+Content-Type: application/json
+
+### get incomes by id
+GET http://localhost:8080/api/incomes/1
+Content-Type: application/json
+
+### delete expense
+DELETE http://localhost:8080/api/expenses/1
+
+### delete income
+DELETE http://localhost:8080/api/incomes/1
+
