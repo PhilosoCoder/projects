@@ -1,0 +1,18 @@
+server:
+  port: 8083
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    password: postgres
+    username: postgres
+    driver-class-name: org.postgresql.Driver
+
+jpa:
+  generate-ddl: false
+  hibernate:
+    dialect: PostgreSQLDialect
+    ddl-auto: none
+
+flyway:
+  baselineOnMigrate: true
