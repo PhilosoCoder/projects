@@ -2,55 +2,99 @@ package hu.geralt.bootstrap;
 
 import hu.geralt.domain.Author;
 import hu.geralt.domain.Book;
+import hu.geralt.domain.Publisher;
 import hu.geralt.repositories.AuthorRepository;
 import hu.geralt.repositories.BookRepository;
+import hu.geralt.repositories.PublisherRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class BootstrapData implements CommandLineRunner {
 
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
-
-    public BootstrapData(AuthorRepository authorRepository, BookRepository bookRepository) {
-        this.authorRepository = authorRepository;
-        this.bookRepository = bookRepository;
-    }
+    private final PublisherRepository publisherRepository;
 
     @Override
-    public void run(String... args) throws Exception {
-        Author eric = new Author();
-        eric.setFirstName("Eric");
-        eric.setLastName("Evans");
+    public void run(String... args) {
+        Author martinEricsson = new Author();
+        martinEricsson.setFirstName("Martin");
+        martinEricsson.setLastName("martinEricsson");
 
-        Book ddd = new Book();
-        ddd.setTitle("Domain Driven Design");
-        ddd.setIsbn("123456");
+        Author kennethHite = new Author();
+        kennethHite.setFirstName("Kenneth");
+        kennethHite.setLastName("Hite");
 
-        Author ericSaved = authorRepository.save(eric);
-        Book dddSaved = bookRepository.save(ddd);
+        Author karimMuammar = new Author();
+        karimMuammar.setFirstName("Karim");
+        karimMuammar.setLastName("Muammar");
 
-        Author rod = new Author();
-        eric.setFirstName("Rod");
-        eric.setLastName("Johnson");
+        Book vampireTheMasquerade = new Book();
+        vampireTheMasquerade.setTitle("Vampire: The Masquerade");
+        vampireTheMasquerade.setIsbn("978-1-912200-93-1");
 
-        Book noEjb = new Book();
-        noEjb.setTitle("J2ee Development without EJB");
-        noEjb.setIsbn("54757585");
+        Publisher whiteWolfPublishing = new Publisher();
+        whiteWolfPublishing.setPublisherName("White Wolf");
+        whiteWolfPublishing.setAddress("2075 West Park Place Blvd. Suite G");
+        whiteWolfPublishing.setCity("Stone Mountain");
+        whiteWolfPublishing.setState("GA");
+        whiteWolfPublishing.setZip("30087");
 
-        Author rodSaved = authorRepository.save(rod);
-        Book noEjbSaved = bookRepository.save(noEjb);
+        Author martinEricssonSaved = authorRepository.save(martinEricsson);
+        Author kennethHiteSaved = authorRepository.save(kennethHite);
+        Author karimMuammarSaved = authorRepository.save(karimMuammar);
+        Book vampireTheMasqueradeSaved = bookRepository.save(vampireTheMasquerade);
+        Publisher whiteWolfPublishingSaved = publisherRepository.save(whiteWolfPublishing);
 
-        ericSaved.getBooks().add(dddSaved);
-        rodSaved.getBooks().add(noEjbSaved);
+        Author justinAchilli = new Author();
+        martinEricsson.setFirstName("Justin");
+        martinEricsson.setLastName("Achilli");
 
-        authorRepository.save(ericSaved);
-        authorRepository.save(rodSaved);
+        Book sabbatTheBlackHand = new Book();
+        sabbatTheBlackHand.setTitle("Sabbat: The Black Hand");
+        sabbatTheBlackHand.setIsbn("978-1-735993-88-1");
+
+        Publisher renegadeGameStudios = new Publisher();
+        whiteWolfPublishing.setPublisherName("Renegade Game Studios");
+        whiteWolfPublishing.setAddress("27155 Silver Berry Way");
+        whiteWolfPublishing.setCity("Valley Center");
+        whiteWolfPublishing.setState("California");
+        whiteWolfPublishing.setZip("92082");
+
+        Author justinAchilliSaved = authorRepository.save(justinAchilli);
+        Book sabbatTheBlackHandSaved = bookRepository.save(sabbatTheBlackHand);
+        Publisher renegadeGameStudiosSaved = publisherRepository.save(renegadeGameStudios);
+
+        martinEricssonSaved.getBooks().add(vampireTheMasqueradeSaved);
+        kennethHiteSaved.getBooks().add(vampireTheMasqueradeSaved);
+        karimMuammarSaved.getBooks().add(vampireTheMasqueradeSaved);
+        justinAchilliSaved.getBooks().add(sabbatTheBlackHandSaved);
+        karimMuammarSaved.getBooks().add(sabbatTheBlackHandSaved);
+
+        vampireTheMasqueradeSaved.getAuthors().add(martinEricssonSaved);
+        vampireTheMasqueradeSaved.getAuthors().add(kennethHiteSaved);
+        vampireTheMasqueradeSaved.getAuthors().add(karimMuammarSaved);
+        sabbatTheBlackHandSaved.getAuthors().add(justinAchilliSaved);
+        sabbatTheBlackHandSaved.getAuthors().add(karimMuammarSaved);
+
+        whiteWolfPublishingSaved.getBooks().add(vampireTheMasqueradeSaved);
+        renegadeGameStudiosSaved.getBooks().add(sabbatTheBlackHandSaved);
+
+        authorRepository.save(martinEricssonSaved);
+        authorRepository.save(kennethHiteSaved);
+        authorRepository.save(karimMuammarSaved);
+        authorRepository.save(justinAchilliSaved);
+
+        publisherRepository.save(whiteWolfPublishingSaved);
+        publisherRepository.save(renegadeGameStudios);
 
         System.out.println("In bootstrap");
         System.out.println("Author Count: " + authorRepository.count());
         System.out.println("Book Count: " + bookRepository.count());
+        System.out.println("Publisher Count: " + publisherRepository.count());
 
     }
 

@@ -1,5 +1,0 @@
-CREATE TABLE book (
-    book_id BIGINT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    title TEXT,
-    isbn TEXT
-);
