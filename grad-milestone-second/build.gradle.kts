@@ -37,6 +37,7 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     implementation("org.postgresql:postgresql:42.1.4")
+    implementation("org.thymeleaf:thymeleaf:3.1.2.RELEASE")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers:1.19.4")
     testImplementation("org.springframework.security:spring-security-test")

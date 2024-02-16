@@ -1,2 +1,2 @@
-rootProject.name = "spring-boot"
+rootProject.name = "grad-milestone-second"
 
