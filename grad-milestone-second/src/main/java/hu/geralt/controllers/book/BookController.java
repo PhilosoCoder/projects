@@ -1,6 +1,6 @@
-package hu.geralt.controllers;
+package hu.geralt.controllers.book;
 
-import hu.geralt.services.BookService;
+import hu.geralt.services.book.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

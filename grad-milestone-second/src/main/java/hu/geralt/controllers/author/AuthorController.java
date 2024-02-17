@@ -1,6 +1,6 @@
-package hu.geralt.controllers;
+package hu.geralt.controllers.author;
 
-import hu.geralt.services.AuthorService;
+import hu.geralt.services.author.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

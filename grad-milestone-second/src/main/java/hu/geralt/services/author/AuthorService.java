@@ -1,4 +1,4 @@
-package hu.geralt.services;
+package hu.geralt.services.author;
 
 import hu.geralt.domain.Author;
 
