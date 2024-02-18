@@ -1,23 +1,22 @@
-package hu.geralt;
+package hu.geralt.controllers.faux;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import hu.geralt.controllers.di.DiControllerProfile;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles("test")
-class DiApplicationProfileTest {
+@ActiveProfiles({"dev", "di"})
+class FauxControllerTest {
 
     @Autowired
-    DiControllerProfile diControllerProfile;
+    FauxController fauxController;
 
     @Test
-    void testProfile() {
-        assertEquals("Hello from profile!", diControllerProfile.sayHello());
+    void testGetDatasource() {
+        assertEquals("Development", fauxController.getDatasource());
     }
 
 }

@@ -1,8 +1,10 @@
 package hu.geralt.services.di;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-@Service("diServiceImpl")
+@Service
+@Profile("impl")
 public class DiServiceImpl implements DiService {
 
     @Override

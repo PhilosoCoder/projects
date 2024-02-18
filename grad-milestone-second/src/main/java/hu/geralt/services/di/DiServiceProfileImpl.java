@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service("serviceProfile")
-@Profile({"test", "default"})
+@Profile({"di", "default"})
 public class DiServiceProfileImpl implements DiService {
 
     @Override

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 @Controller
-//@RequiredArgsConstructor
 public class DiControllerProfile {
 
     private final DiService diService;
