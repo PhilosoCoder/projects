@@ -1,6 +1,6 @@
 package hu.geralt.services.book;
 
-import hu.geralt.domain.Book;
+import hu.geralt.model.Book;
 import hu.geralt.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

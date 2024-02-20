@@ -1,4 +1,4 @@
-package hu.geralt.domain;
+package hu.geralt.model;
 
 import java.util.HashSet;
 import java.util.Set;

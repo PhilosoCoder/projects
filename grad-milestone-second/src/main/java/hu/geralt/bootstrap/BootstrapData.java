@@ -1,8 +1,8 @@
 package hu.geralt.bootstrap;
 
-import hu.geralt.domain.Author;
-import hu.geralt.domain.Book;
-import hu.geralt.domain.Publisher;
+import hu.geralt.model.Author;
+import hu.geralt.model.Book;
+import hu.geralt.model.Publisher;
 import hu.geralt.repositories.AuthorRepository;
 import hu.geralt.repositories.BookRepository;
 import hu.geralt.repositories.PublisherRepository;
