@@ -46,6 +46,11 @@ dependencies {
     testImplementation("org.testcontainers:postgresql:1.19.4")
 }
 
-tasks.test {
-    useJUnitPlatform()
+tasks {
+    test {
+        useJUnitPlatform()
+    }
+    withType<JavaCompile> {
+        options.compilerArgs.add("-parameters")
+    }
 }

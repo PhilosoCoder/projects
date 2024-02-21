@@ -10,10 +10,12 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,15 +28,6 @@ public class BeerController {
 
     private final BeerService beerService;
 
-    @PostMapping
-    @SneakyThrows
-    public ResponseEntity<Void> handlePost(@RequestBody Beer beer) {
-        Beer savedBeer = beerService.saveBeer(beer);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "/api/v1/beer/" + savedBeer.getId().toString());
-        return ResponseEntity.created(new URI("/api/v1/beer/" + savedBeer.getId())).build();
-    }
-
     @GetMapping
     public List<Beer> listBeers() {
         return beerService.listBeers();
@@ -45,4 +38,23 @@ public class BeerController {
         log.debug("Get beer by id - in controller");
         return beerService.getBeerById(beerId);
     }
+
+    @PostMapping
+    @SneakyThrows
+    public ResponseEntity<Void> handlePost(@RequestBody Beer beer) {
+        Beer savedBeer = beerService.saveBeer(beer);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Location", "/api/v1/beer/" + savedBeer.getId().toString());
+        return ResponseEntity.created(new URI("/api/v1/beer/" + savedBeer.getId())).build();
+    }
+
+    @PutMapping("/{beerId}")
+    public ResponseEntity<Void> updateById (
+            @PathVariable UUID beerId,
+            @RequestBody Beer beer
+    ) {
+        beerService.updateBeerById(beerId, beer);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }
