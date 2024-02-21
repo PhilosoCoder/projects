@@ -84,6 +84,7 @@ public class BeerServiceImpl implements BeerService {
                 .beerStyle(beer.getBeerStyle())
                 .quantityOnHand(beer.getQuantityOnHand())
                 .upc(beer.getUpc())
+                .version(beer.getVersion())
                 .price(beer.getPrice())
                 .build();
 
