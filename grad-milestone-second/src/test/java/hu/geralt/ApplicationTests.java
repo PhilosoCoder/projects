@@ -1,6 +1,6 @@
 package hu.geralt;
 
-import hu.geralt.controllers.di.DiControllerProfile;
+import hu.geralt.controllers.di.di.DiControllerProfile;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -2,6 +2,7 @@ package hu.geralt.controllers.beer;
 
 import java.util.UUID;
 
+import hu.geralt.controllers.beer.beer.BeerController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
