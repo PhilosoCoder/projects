@@ -21,12 +21,12 @@ configurations {
 }
 
 dependencies {
-    val springBootVersion = "3.2.3"
+    val springBootVersion = "3.3.0"
     val junitBomVersion = "5.9.1"
     val lombokVersion = "1.18.30"
-    val postgresqlVersion = "42.2.27"
+    val postgresqlVersion = "42.7.2"
     val thymeleafVersion = "3.1.2.RELEASE"
-    val springBootTestcontainersVersion = "1.19.4"
+    val springBootTestcontainersVersion = "1.19.6"
 
     implementation(platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion"))
     implementation("org.springframework.boot:spring-boot-starter-web")
