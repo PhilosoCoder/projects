@@ -21,7 +21,7 @@ configurations {
 }
 
 dependencies {
-    val springBootVersion = "3.3.0"
+    val springBootVersion = "3.2.3"
     val junitBomVersion = "5.9.1"
     val lombokVersion = "1.18.30"
     val postgresqlVersion = "42.7.2"
