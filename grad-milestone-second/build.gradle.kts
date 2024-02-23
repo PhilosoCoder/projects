@@ -30,16 +30,20 @@ dependencies {
 
     implementation(platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion"))
     implementation("org.springframework.boot:spring-boot-starter-web")
+
     implementation("org.flywaydb:flyway-core")
+
     implementation("org.springframework.boot:spring-boot-starter-data-couchbase")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web-services")
+
     implementation("org.postgresql:postgresql:$postgresqlVersion")
     implementation("org.thymeleaf:thymeleaf:$thymeleafVersion")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers:$springBootTestcontainersVersion")
     testImplementation("org.springframework.security:spring-security-test")
+
     testImplementation("org.testcontainers:couchbase")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql:$springBootTestcontainersVersion")
