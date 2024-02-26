@@ -3,12 +3,14 @@ package hu.geralt.controllers.beer.customer;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.geralt.model.beer.Customer;
@@ -34,11 +36,11 @@ class CustomerControllerTest {
     @MockBean
     CustomerService customerService;
 
-    CustomerServiceImpl customerServiceImpl = new CustomerServiceImpl();
+    CustomerServiceImpl customerServiceImpl;
 
     @BeforeEach
     void setup() {
-
+        customerServiceImpl = new CustomerServiceImpl();
     }
 
     @Test
@@ -80,6 +82,19 @@ class CustomerControllerTest {
                         .content(objectMapper.writeValueAsBytes(customer)))
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("Location"));
+    }
+
+    @Test
+    void testUpdateCustomer() throws Exception {
+        Customer customer = customerServiceImpl.listCustomers().getFirst();
+
+        mockMvc.perform(put("/api/v1/customer/" + customer.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(customer)))
+                .andExpect(status().isOk());
+
+        verify(customerService).updateCostumerById(any(UUID.class), any(Customer.class));
     }
 
 }
