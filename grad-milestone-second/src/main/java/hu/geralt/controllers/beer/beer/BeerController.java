@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import hu.geralt.model.beer.Beer;
 import hu.geralt.services.beer.beer.BeerService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/v1/beer")
 public class BeerController {
