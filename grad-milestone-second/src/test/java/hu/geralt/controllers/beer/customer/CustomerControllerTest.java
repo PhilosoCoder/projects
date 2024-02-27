@@ -1,10 +1,14 @@
 package hu.geralt.controllers.beer.customer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -18,6 +22,7 @@ import hu.geralt.services.beer.customer.CustomerService;
 import hu.geralt.services.beer.customer.CustomerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -89,12 +94,26 @@ class CustomerControllerTest {
         Customer customer = customerServiceImpl.listCustomers().getFirst();
 
         mockMvc.perform(put("/api/v1/customer/" + customer.getId())
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(customer)))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(customer)))
                 .andExpect(status().isOk());
 
         verify(customerService).updateCostumerById(any(UUID.class), any(Customer.class));
+    }
+
+    @Test
+    void testDeleteCustomer() throws Exception {
+        Customer customer = customerServiceImpl.listCustomers().getFirst();
+
+        mockMvc.perform(delete("/api/v1/customer/" + customer.getId())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        ArgumentCaptor<UUID> argumentCaptor = ArgumentCaptor.forClass(UUID.class);
+        verify(customerService).deleteCustomerById(argumentCaptor.capture());
+
+        assertThat(customer.getId()).isEqualTo(argumentCaptor.getValue());
     }
 
 }
