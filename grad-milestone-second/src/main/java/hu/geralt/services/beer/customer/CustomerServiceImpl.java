@@ -7,15 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import hu.geralt.model.beer.Beer;
 import hu.geralt.model.beer.Customer;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 @Slf4j
@@ -101,4 +96,5 @@ public class CustomerServiceImpl implements CustomerService {
             existing.setCustomerName(customer.getCustomerName());
         }
     }
+
 }
