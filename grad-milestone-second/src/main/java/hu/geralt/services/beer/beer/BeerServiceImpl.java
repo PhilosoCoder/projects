@@ -20,11 +20,6 @@ public class BeerServiceImpl implements BeerService {
 
     private final Map<UUID, Beer> beerMap;
 
-    @Override
-    public List<Beer> listBeers() {
-        return new ArrayList<>(beerMap.values());
-    }
-
     public BeerServiceImpl() {
         this.beerMap = new HashMap<>();
 
@@ -67,6 +62,11 @@ public class BeerServiceImpl implements BeerService {
         beerMap.put(beer.getId(), beer);
         beerMap.put(otherBeer.getId(), otherBeer);
         beerMap.put(anotherBeer.getId(), anotherBeer);
+    }
+
+    @Override
+    public List<Beer> listBeers() {
+        return new ArrayList<>(beerMap.values());
     }
 
     @Override

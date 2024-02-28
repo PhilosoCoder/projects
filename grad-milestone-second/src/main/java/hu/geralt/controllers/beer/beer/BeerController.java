@@ -52,7 +52,7 @@ public class BeerController {
 
     @PutMapping("/{beerId}")
     public ResponseEntity<Void> updateById(
-            @PathVariable UUID beerId,
+            @PathVariable("beerId") UUID beerId,
             @RequestBody Beer beer
     ) {
         beerService.updateBeerById(beerId, beer);
@@ -66,7 +66,7 @@ public class BeerController {
     }
 
     @PatchMapping("/{beerId}")
-    public ResponseEntity<Void> patchBeerById(@PathVariable("beerId") UUID beerId, Beer beer) {
+    public ResponseEntity<Void> patchBeerById(@PathVariable("beerId") UUID beerId, @RequestBody Beer beer) {
         beerService.patchBeerById(beerId, beer);
         return new ResponseEntity<>(HttpStatus.OK);
     }
