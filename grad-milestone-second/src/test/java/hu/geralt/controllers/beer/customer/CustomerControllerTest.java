@@ -23,6 +23,7 @@ import hu.geralt.services.beer.customer.CustomerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -42,6 +43,9 @@ class CustomerControllerTest {
     CustomerService customerService;
 
     CustomerServiceImpl customerServiceImpl;
+
+    @Captor
+    ArgumentCaptor<UUID> argumentCaptor;
 
     @BeforeEach
     void setup() {
@@ -99,7 +103,9 @@ class CustomerControllerTest {
                         .content(objectMapper.writeValueAsString(customer)))
                 .andExpect(status().isOk());
 
-        verify(customerService).updateCostumerById(any(UUID.class), any(Customer.class));
+        verify(customerService).updateCostumerById(argumentCaptor.capture(), any(Customer.class));
+
+        assertThat(customer.getId()).isEqualTo(argumentCaptor.getValue());
     }
 
     @Test
@@ -110,7 +116,6 @@ class CustomerControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
-        ArgumentCaptor<UUID> argumentCaptor = ArgumentCaptor.forClass(UUID.class);
         verify(customerService).deleteCustomerById(argumentCaptor.capture());
 
         assertThat(customer.getId()).isEqualTo(argumentCaptor.getValue());
