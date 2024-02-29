@@ -21,6 +21,7 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.geralt.controllers.beer.beer.BeerController;
+import hu.geralt.exceptions.NotFoundException;
 import hu.geralt.model.beer.Beer;
 import hu.geralt.services.beer.beer.BeerService;
 import hu.geralt.services.beer.beer.BeerServiceImpl;
@@ -144,6 +145,15 @@ class BeerControllerTest {
 
         assertThat(beer.getId()).isEqualTo(uuidArgumentCaptor.getValue());
         assertThat(beerMap).containsEntry("beerName", beerArgumentCaptor.getValue().getBeerName());
+    }
+
+    @Test
+    void getBeerByIdNotFound() throws Exception {
+
+        given(beerService.getBeerById(any(UUID.class))).willThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/api/v1/beer/" + UUID.randomUUID()))
+                .andExpect(status().isNotFound());
     }
 
 }
