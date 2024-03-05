@@ -1,4 +1,4 @@
-package hu.geralt.model.beer;
+package hu.geralt.entities.beer;
 
 public enum BeerStyle {
 

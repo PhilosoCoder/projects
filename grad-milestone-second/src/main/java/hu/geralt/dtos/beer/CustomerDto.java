@@ -1,4 +1,4 @@
-package hu.geralt.model.beer;
+package hu.geralt.dtos.beer;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -16,8 +16,8 @@ public class CustomerDto {
 
     private String version;
 
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
-    private LocalDateTime lastModifiedDate;
+    private LocalDateTime updatedAt;
 
 }

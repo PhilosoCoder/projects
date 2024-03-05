@@ -3,7 +3,7 @@ package hu.geralt.services.beer.customer;
 import java.util.List;
 import java.util.UUID;
 
-import hu.geralt.model.beer.CustomerDto;
+import hu.geralt.dtos.beer.CustomerDto;
 
 public interface CustomerService {
 

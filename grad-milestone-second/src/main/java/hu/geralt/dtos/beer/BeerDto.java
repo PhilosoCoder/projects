@@ -1,9 +1,10 @@
-package hu.geralt.model.beer;
+package hu.geralt.dtos.beer;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import hu.geralt.entities.beer.BeerStyle;
 import lombok.Builder;
 import lombok.Data;
 

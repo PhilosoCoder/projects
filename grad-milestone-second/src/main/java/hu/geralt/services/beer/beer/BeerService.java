@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import hu.geralt.model.beer.BeerDto;
+import hu.geralt.dtos.beer.BeerDto;
 
 public interface BeerService {
 

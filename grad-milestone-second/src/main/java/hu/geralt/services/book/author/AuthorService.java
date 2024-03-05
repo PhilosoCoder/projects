@@ -1,6 +1,6 @@
 package hu.geralt.services.book.author;
 
-import hu.geralt.model.book.Author;
+import hu.geralt.entities.book.Author;
 
 public interface AuthorService {
 

@@ -1,10 +1,8 @@
-package hu.geralt.entities;
+package hu.geralt.entities.beer;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import hu.geralt.model.beer.BeerStyle;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,26 +21,18 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Beer {
+public class Customer {
 
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "beer_id", updatable = false, nullable = false)
+    @Column(name = "customer_id", updatable = false, nullable = false)
     private UUID id;
+
+    private String customerName;
 
     @Version
     private Integer version;
-
-    private String beerName;
-
-    private BeerStyle beerStyle;
-
-    private String upc;
-
-    private Integer quantityOnHand;
-
-    private BigDecimal price;
 
     private LocalDateTime createdAt;
 

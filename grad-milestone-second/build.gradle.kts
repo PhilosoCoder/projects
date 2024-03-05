@@ -27,6 +27,7 @@ dependencies {
     val postgresqlVersion = "42.7.2"
     val thymeleafVersion = "3.1.2.RELEASE"
     val springBootTestcontainersVersion = "1.19.6"
+    val mapStructVersion = "1.5.5.Final"
 
     implementation(platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion"))
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -40,6 +41,7 @@ dependencies {
 
     implementation("org.postgresql:postgresql:$postgresqlVersion")
     implementation("org.thymeleaf:thymeleaf:$thymeleafVersion")
+    implementation("org.mapstruct:mapstruct:$mapStructVersion")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers:$springBootTestcontainersVersion")

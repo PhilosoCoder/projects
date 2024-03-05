@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hu.geralt.model.beer.CustomerDto;
+import hu.geralt.dtos.beer.CustomerDto;
 import hu.geralt.services.beer.customer.CustomerService;
 import hu.geralt.services.beer.customer.CustomerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;

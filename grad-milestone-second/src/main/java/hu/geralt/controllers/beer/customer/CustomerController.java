@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
-import hu.geralt.model.beer.CustomerDto;
+import hu.geralt.dtos.beer.CustomerDto;
 import hu.geralt.services.beer.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

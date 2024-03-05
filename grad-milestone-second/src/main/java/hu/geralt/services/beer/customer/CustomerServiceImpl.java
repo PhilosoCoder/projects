@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import hu.geralt.model.beer.CustomerDto;
+import hu.geralt.dtos.beer.CustomerDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -25,24 +25,24 @@ public class CustomerServiceImpl implements CustomerService {
                 .id(UUID.randomUUID())
                 .customerName("John")
                 .version("v1")
-                .createdDate(LocalDateTime.now())
-                .lastModifiedDate(LocalDateTime.now())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
 
         CustomerDto otherCustomer = CustomerDto.builder()
                 .id(UUID.randomUUID())
                 .customerName("Jack")
                 .version("v1")
-                .createdDate(LocalDateTime.now())
-                .lastModifiedDate(LocalDateTime.now())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
 
         CustomerDto anotherCustomer = CustomerDto.builder()
                 .id(UUID.randomUUID())
                 .customerName("Jane")
                 .version("v1")
-                .createdDate(LocalDateTime.now())
-                .lastModifiedDate(LocalDateTime.now())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
 
         customerMap.put(customer.getId(), customer);
@@ -65,8 +65,8 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDto saveCustomer(CustomerDto customer) {
         CustomerDto savedCustomer = CustomerDto.builder()
                 .customerName("Jack")
-                .createdDate(LocalDateTime.now())
-                .lastModifiedDate(LocalDateTime.now())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .id(UUID.randomUUID())
                 .version(customer.getVersion())
                 .build();
@@ -80,7 +80,7 @@ public class CustomerServiceImpl implements CustomerService {
         CustomerDto existing = customerMap.get(customerID);
 
         existing.setCustomerName(customer.getCustomerName());
-        existing.setLastModifiedDate(LocalDateTime.now());
+        existing.setUpdatedAt(LocalDateTime.now());
     }
 
     @Override

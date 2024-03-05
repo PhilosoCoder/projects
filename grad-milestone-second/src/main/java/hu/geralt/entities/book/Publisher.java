@@ -1,10 +1,12 @@
-package hu.geralt.model.book;
+package hu.geralt.entities.book;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,13 +23,18 @@ public class Publisher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "publisher_id")
     private Long id;
-    @Column(name = "publisher_name")
+
     private String publisherName;
+
     private String address;
+
     private String city;
+
     private String state;
+
     private String zip;
-    @OneToMany(mappedBy = "publisher")
+
+    @OneToMany(mappedBy = "publisher", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Book> books = new HashSet<>();
 
     @Override

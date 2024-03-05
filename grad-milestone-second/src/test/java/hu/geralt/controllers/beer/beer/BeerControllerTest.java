@@ -1,4 +1,4 @@
-package hu.geralt.controllers.beer;
+package hu.geralt.controllers.beer.beer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -21,8 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hu.geralt.controllers.beer.beer.BeerController;
-import hu.geralt.model.beer.BeerDto;
+import hu.geralt.dtos.beer.BeerDto;
 import hu.geralt.services.beer.beer.BeerService;
 import hu.geralt.services.beer.beer.BeerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;

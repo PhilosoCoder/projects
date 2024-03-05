@@ -3,5 +3,5 @@ CREATE TABLE customer (
     customer_name TEXT,
     version INTEGER,
     created_at TIMESTAMP,
-    last_modified_date TIMESTAMP
+    updated_at TIMESTAMP
 );

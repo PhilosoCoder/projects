@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import hu.geralt.model.beer.BeerDto;
-import hu.geralt.model.beer.BeerStyle;
+import hu.geralt.dtos.beer.BeerDto;
+import hu.geralt.entities.beer.BeerStyle;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

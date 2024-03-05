@@ -1,7 +1,7 @@
 package hu.geralt.services.book.author;
 
-import hu.geralt.model.book.Author;
-import hu.geralt.repositories.AuthorRepository;
+import hu.geralt.entities.book.Author;
+import hu.geralt.repositories.book.AuthorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

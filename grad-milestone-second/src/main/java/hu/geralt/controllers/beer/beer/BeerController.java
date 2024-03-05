@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import hu.geralt.exceptions.NotFoundException;
-import hu.geralt.model.beer.BeerDto;
+import hu.geralt.dtos.beer.BeerDto;
 import hu.geralt.services.beer.beer.BeerService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
