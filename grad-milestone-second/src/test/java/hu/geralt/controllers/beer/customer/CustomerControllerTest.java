@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hu.geralt.model.beer.Customer;
+import hu.geralt.model.beer.CustomerDto;
 import hu.geralt.services.beer.customer.CustomerService;
 import hu.geralt.services.beer.customer.CustomerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,7 +51,7 @@ class CustomerControllerTest {
     ArgumentCaptor<UUID> uuidArgumentCaptor;
 
     @Captor
-    ArgumentCaptor<Customer> customerArgumentCaptor;
+    ArgumentCaptor<CustomerDto> customerArgumentCaptor;
 
     @BeforeEach
     void setup() {
@@ -60,7 +60,7 @@ class CustomerControllerTest {
 
     @Test
     void getCustomerById() throws Exception {
-        Customer testCustomer = customerServiceImpl.listCustomers().getFirst();
+        CustomerDto testCustomer = customerServiceImpl.listCustomers().getFirst();
 
         given(customerService.getCustomerById(testCustomer.getId())).willReturn(testCustomer);
 
@@ -86,9 +86,9 @@ class CustomerControllerTest {
 
     @Test
     void TestCreateCustomer() throws Exception {
-        Customer customer = customerServiceImpl.listCustomers().getFirst();
+        CustomerDto customer = customerServiceImpl.listCustomers().getFirst();
 
-        given(customerService.saveCustomer(any(Customer.class)))
+        given(customerService.saveCustomer(any(CustomerDto.class)))
                 .willReturn(customerServiceImpl.listCustomers().get(1));
 
         mockMvc.perform(post("/api/v1/customer")
@@ -101,7 +101,7 @@ class CustomerControllerTest {
 
     @Test
     void testUpdateCustomer() throws Exception {
-        Customer customer = customerServiceImpl.listCustomers().getFirst();
+        CustomerDto customer = customerServiceImpl.listCustomers().getFirst();
 
         mockMvc.perform(put("/api/v1/customer/" + customer.getId())
                         .accept(MediaType.APPLICATION_JSON)
@@ -109,14 +109,14 @@ class CustomerControllerTest {
                         .content(objectMapper.writeValueAsString(customer)))
                 .andExpect(status().isOk());
 
-        verify(customerService).updateCostumerById(uuidArgumentCaptor.capture(), any(Customer.class));
+        verify(customerService).updateCostumerById(uuidArgumentCaptor.capture(), any(CustomerDto.class));
 
         assertThat(customer.getId()).isEqualTo(uuidArgumentCaptor.getValue());
     }
 
     @Test
     void testDeleteCustomer() throws Exception {
-        Customer customer = customerServiceImpl.listCustomers().getFirst();
+        CustomerDto customer = customerServiceImpl.listCustomers().getFirst();
 
         mockMvc.perform(delete("/api/v1/customer/" + customer.getId())
                         .accept(MediaType.APPLICATION_JSON))
@@ -129,7 +129,7 @@ class CustomerControllerTest {
 
     @Test
     void testPatchBeer() throws Exception {
-        Customer customer = customerServiceImpl.listCustomers().getFirst();
+        CustomerDto customer = customerServiceImpl.listCustomers().getFirst();
 
         Map<String, Object> customerMap = new HashMap<>();
         customerMap.put("customerName", "New Name");

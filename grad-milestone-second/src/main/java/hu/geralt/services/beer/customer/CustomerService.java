@@ -3,20 +3,20 @@ package hu.geralt.services.beer.customer;
 import java.util.List;
 import java.util.UUID;
 
-import hu.geralt.model.beer.Customer;
+import hu.geralt.model.beer.CustomerDto;
 
 public interface CustomerService {
 
-    List<Customer> listCustomers();
+    List<CustomerDto> listCustomers();
 
-    Customer getCustomerById(UUID id);
+    CustomerDto getCustomerById(UUID id);
 
-    Customer saveCustomer(Customer customer);
+    CustomerDto saveCustomer(CustomerDto customer);
 
-    void updateCostumerById(UUID customerID, Customer customer);
+    void updateCostumerById(UUID customerID, CustomerDto customer);
 
     void deleteCustomerById(UUID customerId);
 
-    void patchCustomerById(UUID customerId, Customer customer);
+    void patchCustomerById(UUID customerId, CustomerDto customer);
 
 }

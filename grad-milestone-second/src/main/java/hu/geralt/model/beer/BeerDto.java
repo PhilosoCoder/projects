@@ -4,16 +4,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Beer {
+public class BeerDto {
 
     private UUID id;
 
@@ -29,8 +25,8 @@ public class Beer {
 
     private BigDecimal price;
 
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
-    private LocalDateTime updateDate;
+    private LocalDateTime updatedAt;
 
 }

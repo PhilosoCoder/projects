@@ -1,12 +1,10 @@
 package hu.geralt.controllers.beer.customer;
 
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import hu.geralt.model.beer.Beer;
-import hu.geralt.model.beer.Customer;
+import hu.geralt.model.beer.CustomerDto;
 import hu.geralt.services.beer.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -33,21 +31,21 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @GetMapping
-    public List<Customer> listCustomers() {
+    public List<CustomerDto> listCustomers() {
         return customerService.listCustomers();
     }
 
     @GetMapping
     @RequestMapping("/{customerId}")
-    public Customer getCustomerById(@PathVariable("customerId") UUID customerId) {
+    public CustomerDto getCustomerById(@PathVariable("customerId") UUID customerId) {
         log.debug("Get customer by id - in controller");
         return customerService.getCustomerById(customerId);
     }
 
     @PostMapping
     @SneakyThrows
-    public ResponseEntity<Void> createCustomer(@RequestBody Customer customer) {
-        Customer savedCustomer = customerService.saveCustomer(customer);
+    public ResponseEntity<Void> createCustomer(@RequestBody CustomerDto customer) {
+        CustomerDto savedCustomer = customerService.saveCustomer(customer);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/customer/" + savedCustomer.getId().toString());
         return ResponseEntity.created(new URI("/api/v1/customer/" + savedCustomer.getId())).build();
@@ -56,7 +54,7 @@ public class CustomerController {
     @PutMapping("/{customerId}")
     public ResponseEntity<Void> updateCostumerById (
             @PathVariable UUID customerId,
-            @RequestBody Customer customer
+            @RequestBody CustomerDto customer
     ) {
         customerService.updateCostumerById(customerId, customer);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -69,7 +67,7 @@ public class CustomerController {
     }
 
     @PatchMapping("/{customerId}")
-    public ResponseEntity<Void> patchCustomerById(@PathVariable("customerId") UUID customerId, @RequestBody Customer customer) {
+    public ResponseEntity<Void> patchCustomerById(@PathVariable("customerId") UUID customerId, @RequestBody CustomerDto customer) {
         customerService.patchCustomerById(customerId, customer);
         return new ResponseEntity<>(HttpStatus.OK);
     }

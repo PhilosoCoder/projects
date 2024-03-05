@@ -1,22 +1,23 @@
 package hu.geralt.services.beer.beer;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-import hu.geralt.model.beer.Beer;
+import hu.geralt.model.beer.BeerDto;
 
 public interface BeerService {
 
-    List<Beer> listBeers();
+    List<BeerDto> listBeers();
 
-    Beer getBeerById(UUID id);
+    Optional<BeerDto> getBeerById(UUID id);
 
-    Beer saveBeer(Beer beer);
+    BeerDto saveBeer(BeerDto beer);
 
-    void updateBeerById(UUID beerId, Beer beer);
+    void updateBeerById(UUID beerId, BeerDto beer);
 
     void deleteBeerById(UUID beerId);
 
-    void patchBeerById(UUID beerId, Beer beer);
+    void patchBeerById(UUID beerId, BeerDto beer);
 
 }
