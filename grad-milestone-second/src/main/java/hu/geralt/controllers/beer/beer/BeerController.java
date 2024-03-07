@@ -1,6 +1,5 @@
 package hu.geralt.controllers.beer.beer;
 
-import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,7 +47,7 @@ public class BeerController {
         BeerDto savedBeer = beerService.saveBeer(beer);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/beer/" + savedBeer.getId().toString());
-        return ResponseEntity.created(new URI("/api/v1/beer/" + savedBeer.getId())).build();
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @PutMapping("/{beerId}")

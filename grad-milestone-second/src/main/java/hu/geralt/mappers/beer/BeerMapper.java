@@ -4,11 +4,11 @@ import hu.geralt.entities.beer.Beer;
 import hu.geralt.dtos.beer.BeerDto;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface BeerMapper {
 
-    Beer beerDtoBeer(BeerDto dto);
+    Beer beerDtoToBeer(BeerDto dto);
 
-    BeerDto beerToBeerDto(Beer beer);
+    BeerDto  beerToBeerDto(Beer beer);
 
 }

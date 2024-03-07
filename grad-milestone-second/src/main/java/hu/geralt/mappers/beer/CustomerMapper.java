@@ -4,7 +4,7 @@ import hu.geralt.entities.beer.Customer;
 import hu.geralt.dtos.beer.CustomerDto;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface CustomerMapper {
 
     Customer customerDtoToCustomer(CustomerDto dto);

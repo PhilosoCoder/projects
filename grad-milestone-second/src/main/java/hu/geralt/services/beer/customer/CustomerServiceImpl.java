@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import hu.geralt.dtos.beer.CustomerDto;
@@ -56,9 +57,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDto getCustomerById(UUID id) {
+    public Optional<CustomerDto> getCustomerById(UUID id) {
         log.debug("Get customer Id - in service. Id: " + id.toString());
-        return customerMap.get(id);
+        return Optional.of(customerMap.get(id));
     }
 
     @Override

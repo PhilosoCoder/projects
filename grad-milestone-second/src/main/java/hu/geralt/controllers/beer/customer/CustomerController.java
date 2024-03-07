@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import hu.geralt.dtos.beer.CustomerDto;
+import hu.geralt.exceptions.NotFoundException;
 import hu.geralt.services.beer.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -39,7 +40,7 @@ public class CustomerController {
     @RequestMapping("/{customerId}")
     public CustomerDto getCustomerById(@PathVariable("customerId") UUID customerId) {
         log.debug("Get customer by id - in controller");
-        return customerService.getCustomerById(customerId);
+        return customerService.getCustomerById(customerId).orElseThrow(NotFoundException::new);
     }
 
     @PostMapping

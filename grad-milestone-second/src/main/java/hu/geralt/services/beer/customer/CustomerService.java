@@ -1,6 +1,7 @@
 package hu.geralt.services.beer.customer;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import hu.geralt.dtos.beer.CustomerDto;
@@ -9,7 +10,7 @@ public interface CustomerService {
 
     List<CustomerDto> listCustomers();
 
-    CustomerDto getCustomerById(UUID id);
+    Optional<CustomerDto> getCustomerById(UUID id);
 
     CustomerDto saveCustomer(CustomerDto customer);
 
