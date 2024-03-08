@@ -3,6 +3,7 @@ package hu.geralt.services.beer.customer;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 import hu.geralt.dtos.beer.CustomerDto;
 import hu.geralt.entities.beer.Customer;
@@ -43,8 +44,17 @@ public class CustomerServiceJpa implements CustomerService {
     }
 
     @Override
-    public void updateCostumerById(UUID customerID, CustomerDto customer) {
+    public Optional<CustomerDto> updateCostumerById(UUID customerID, CustomerDto customer) {
+        AtomicReference<Optional<CustomerDto>> atomicReference = new AtomicReference<>();
+        customerRepository.findById(customerID).ifPresentOrElse(foundCustomer -> {
+            foundCustomer.setCustomerName(customer.getCustomerName());
+            atomicReference.set(Optional.of(customerMapper
+                    .customerToCustomerDto(customerRepository.save(foundCustomer))));
+        }, () -> {
+            atomicReference.set(Optional.empty());
+        });
 
+        return atomicReference.get();
     }
 
     @Override

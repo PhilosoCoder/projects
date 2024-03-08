@@ -3,6 +3,7 @@ package hu.geralt.services.beer.beer;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 import hu.geralt.dtos.beer.BeerDto;
 import hu.geralt.entities.beer.Beer;
@@ -43,8 +44,20 @@ public class BeerServiceJpa implements BeerService {
     }
 
     @Override
-    public void updateBeerById(UUID beerId, BeerDto beer) {
+    public Optional<BeerDto> updateBeerById(UUID beerId, BeerDto beer) {
+        AtomicReference<Optional<BeerDto>> atomicReference = new AtomicReference<>();
+        beerRepository.findById(beerId).ifPresentOrElse(foundBeer -> {
+            foundBeer.setBeerName(beer.getBeerName());
+            foundBeer.setBeerStyle(beer.getBeerStyle());
+            foundBeer.setUpc(beer.getUpc());
+            foundBeer.setPrice(beer.getPrice());
+            atomicReference.set(Optional.of(beerMapper
+                    .beerToBeerDto(beerRepository.save(foundBeer))));
+        }, () -> {
+            atomicReference.set(Optional.empty());
+        });
 
+        return atomicReference.get();
     }
 
     @Override

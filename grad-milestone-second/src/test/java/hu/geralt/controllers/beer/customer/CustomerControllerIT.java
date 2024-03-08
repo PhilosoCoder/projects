@@ -12,6 +12,7 @@ import hu.geralt.dtos.beer.CustomerDto;
 import hu.geralt.entities.beer.Beer;
 import hu.geralt.entities.beer.Customer;
 import hu.geralt.exceptions.NotFoundException;
+import hu.geralt.mappers.beer.CustomerMapper;
 import hu.geralt.repositories.beer.CustomerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ class CustomerControllerIT {
 
     @Autowired
     CustomerRepository customerRepository;
+
+    @Autowired
+    CustomerMapper customerMapper;
 
     @Test
     void testListCustomers() {
@@ -79,6 +83,32 @@ class CustomerControllerIT {
 
         Customer customer = customerRepository.findById(savedUuid).orElseThrow(NotFoundException::new);
         assertThat(customer).isNotNull();
+    }
+
+    @Test
+    void testUpdateCustomer() {
+        Customer customer = customerRepository.findAll().getFirst();
+        CustomerDto customerDto = customerMapper.customerToCustomerDto(customer);
+        customerDto.setId(null);
+        customerDto.setVersion(null);
+        final String customerName = "UPDATED";
+        customerDto.setCustomerName(customerName);
+
+        ResponseEntity<Void> responseEntity = customerController.updateCostumerById(customer.getId(), customerDto);
+        assertEquals(HttpStatusCode.valueOf(201), responseEntity.getStatusCode());
+
+        Customer updatedCustomer = customerRepository.findById(customer.getId()).orElseThrow(NotFoundException::new);
+        assertEquals(updatedCustomer.getCustomerName(), customerName);
+    }
+
+    @Test
+    void testUpdatedCustomerNotFound() {
+        UUID randomUuid = UUID.randomUUID();
+        CustomerDto customerDto = CustomerDto.builder().build();
+
+        assertThrows(NotFoundException.class, () -> {
+            customerController.updateCostumerById(randomUuid, customerDto);
+        });
     }
 
 }

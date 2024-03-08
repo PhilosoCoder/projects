@@ -57,7 +57,10 @@ public class CustomerController {
             @PathVariable UUID customerId,
             @RequestBody CustomerDto customer
     ) {
-        customerService.updateCostumerById(customerId, customer);
+        if (customerService.updateCostumerById(customerId, customer).isEmpty()) {
+            throw new NotFoundException();
+        }
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

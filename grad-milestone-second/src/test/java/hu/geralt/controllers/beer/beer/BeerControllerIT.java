@@ -9,6 +9,7 @@ import java.util.UUID;
 import hu.geralt.dtos.beer.BeerDto;
 import hu.geralt.entities.beer.Beer;
 import hu.geralt.exceptions.NotFoundException;
+import hu.geralt.mappers.beer.BeerMapper;
 import hu.geralt.repositories.beer.BeerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ class BeerControllerIT {
 
     @Autowired
     BeerRepository beerRepository;
+    
+    @Autowired
+    BeerMapper beerMapper;
 
     @Test
     void testListBeers() {
@@ -76,6 +80,31 @@ class BeerControllerIT {
 
         Beer beer = beerRepository.findById(savedUuid).orElseThrow(NotFoundException::new);
         assertThat(beer).isNotNull();
+    }
+
+    @Test
+    void testUpdateBeer() {
+        Beer beer = beerRepository.findAll().getFirst();
+        BeerDto beerDto = beerMapper.beerToBeerDto(beer);
+        beerDto.setId(null);
+        beerDto.setVersion(null);
+        final String beerName = "UPDATED";
+        beerDto.setBeerName(beerName);
+
+        ResponseEntity<Void> responseEntity = beerController.updateBeerById(beer.getId(), beerDto);
+        assertEquals(HttpStatusCode.valueOf(201), responseEntity.getStatusCode());
+
+        Beer updatedBeer = beerRepository.findById(beer.getId()).orElseThrow(NotFoundException::new);
+        assertEquals(updatedBeer.getBeerName(), beerName);
+    }
+    @Test
+    void testUpdatedBeerNotFound() {
+        UUID randomUuid = UUID.randomUUID();
+        BeerDto beerDto = BeerDto.builder().build();
+
+        assertThrows(NotFoundException.class, () -> {
+            beerController.updateBeerById(randomUuid, beerDto);
+        });
     }
 
 }
