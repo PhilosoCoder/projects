@@ -86,6 +86,8 @@ class CustomerControllerIT {
     }
 
     @Test
+    @Rollback
+    @Transactional
     void testUpdateCustomer() {
         Customer customer = customerRepository.findAll().getFirst();
         CustomerDto customerDto = customerMapper.customerToCustomerDto(customer);
@@ -108,6 +110,27 @@ class CustomerControllerIT {
 
         assertThrows(NotFoundException.class, () -> {
             customerController.updateCostumerById(randomUuid, customerDto);
+        });
+    }
+
+    @Test
+    @Rollback
+    @Transactional
+    void testDeleteBeer() {
+        Customer customer = customerRepository.findAll().getFirst();
+
+        ResponseEntity<Void> responseEntity = customerController.deleteCustomerById(customer.getId());
+        assertEquals(responseEntity.getStatusCode(), HttpStatusCode.valueOf(204));
+
+        assertThat(customerRepository.findById(customer.getId()).isEmpty());
+    }
+
+    @Test
+    void testDeleteBeerNotFound() {
+        UUID randomUuid = UUID.randomUUID();
+
+        assertThrows(NotFoundException.class, () -> {
+            customerController.deleteCustomerById(randomUuid);
         });
     }
 

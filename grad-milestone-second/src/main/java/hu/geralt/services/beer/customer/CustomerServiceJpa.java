@@ -58,8 +58,12 @@ public class CustomerServiceJpa implements CustomerService {
     }
 
     @Override
-    public void deleteCustomerById(UUID customerId) {
-
+    public boolean deleteCustomerById(UUID customerId) {
+        if (customerRepository.existsById(customerId)) {
+            customerRepository.deleteById(customerId);
+            return true;
+        }
+        return false;
     }
 
     @Override
