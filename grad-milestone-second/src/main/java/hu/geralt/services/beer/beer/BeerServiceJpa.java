@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import hu.geralt.dtos.beer.BeerDto;
+import hu.geralt.entities.beer.Beer;
 import hu.geralt.mappers.beer.BeerMapper;
 import hu.geralt.repositories.beer.BeerRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,8 @@ public class BeerServiceJpa implements BeerService {
 
     @Override
     public BeerDto saveBeer(BeerDto beer) {
-        return beerMapper.beerToBeerDto(beerRepository.save(beerMapper.beerDtoToBeer(beer)));
+        Beer savedBeer = beerRepository.save(beerMapper.beerDtoToBeer(beer));
+        return beerMapper.beerToBeerDto(savedBeer);
     }
 
     @Override

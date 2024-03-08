@@ -64,7 +64,7 @@ class BeerControllerIT {
         BeerDto beerDto = BeerDto.builder()
                 .beerName("New Beer").build();
 
-        ResponseEntity<Void> responseEntity = beerController.handlePost(beerDto);
+        ResponseEntity<Void> responseEntity = beerController.createBeer(beerDto);
 
         assertEquals(responseEntity.getStatusCode(), HttpStatusCode.valueOf(201));
         assertNotNull(responseEntity.getHeaders().getLocation());

@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import hu.geralt.dtos.beer.CustomerDto;
+import hu.geralt.entities.beer.Customer;
 import hu.geralt.mappers.beer.CustomerMapper;
 import hu.geralt.repositories.beer.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,8 @@ public class CustomerServiceJpa implements CustomerService {
 
     @Override
     public CustomerDto saveCustomer(CustomerDto customer) {
-        return null;
+        Customer savedCustomer = customerRepository.save(customerMapper.customerDtoToCustomer(customer));
+        return customerMapper.customerToCustomerDto(savedCustomer);
     }
 
     @Override

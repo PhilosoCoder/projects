@@ -43,7 +43,7 @@ public class BeerController {
 
     @PostMapping
     @SneakyThrows
-    public ResponseEntity<Void> handlePost(@RequestBody BeerDto beer) {
+    public ResponseEntity<Void> createBeer(@RequestBody BeerDto beer) {
         BeerDto savedBeer = beerService.saveBeer(beer);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/beer/" + savedBeer.getId().toString());
