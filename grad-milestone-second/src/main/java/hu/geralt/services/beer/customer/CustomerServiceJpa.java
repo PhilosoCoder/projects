@@ -12,6 +12,7 @@ import hu.geralt.repositories.beer.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -67,7 +68,20 @@ public class CustomerServiceJpa implements CustomerService {
     }
 
     @Override
-    public void patchCustomerById(UUID customerId, CustomerDto customer) {
+    public Optional<CustomerDto> patchCustomerById(UUID customerId, CustomerDto customer) {
+        AtomicReference<Optional<CustomerDto>> atomicReference = new AtomicReference<>();
 
+        customerRepository.findById(customerId).ifPresentOrElse(foundCustomer -> {
+            if (StringUtils.hasText(customer.getCustomerName())){
+                foundCustomer.setCustomerName(customer.getCustomerName());
+            }
+            atomicReference.set(Optional.of(customerMapper
+                    .customerToCustomerDto(customerRepository.save(foundCustomer))));
+        }, () -> {
+            atomicReference.set(Optional.empty());
+        });
+
+        return atomicReference.get();
     }
+
 }
