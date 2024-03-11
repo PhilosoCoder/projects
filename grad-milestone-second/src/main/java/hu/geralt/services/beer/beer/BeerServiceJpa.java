@@ -12,6 +12,7 @@ import hu.geralt.repositories.beer.BeerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 @Service
@@ -39,8 +40,9 @@ public class BeerServiceJpa implements BeerService {
     }
 
     @Override
+    @Transactional
     public BeerDto saveBeer(BeerDto beer) {
-        Beer savedBeer = beerRepository.save(beerMapper.beerDtoToBeer(beer));
+        Beer savedBeer = beerRepository.saveAndFlush(beerMapper.beerDtoToBeer(beer));
         return beerMapper.beerToBeerDto(savedBeer);
     }
 

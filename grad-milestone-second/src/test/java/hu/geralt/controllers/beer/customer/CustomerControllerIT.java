@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.UUID;
 
 import hu.geralt.dtos.beer.CustomerDto;
-import hu.geralt.entities.beer.Beer;
 import hu.geralt.entities.beer.Customer;
 import hu.geralt.exceptions.NotFoundException;
 import hu.geralt.mappers.beer.CustomerMapper;
@@ -73,7 +72,7 @@ class CustomerControllerIT {
 
         ResponseEntity<Void> responseEntity = customerController.createCustomer(customerDto);
 
-        assertEquals(responseEntity.getStatusCode(), HttpStatusCode.valueOf(201));
+        assertEquals(HttpStatusCode.valueOf(201), responseEntity.getStatusCode());
         assertNotNull(responseEntity.getHeaders().getLocation());
 
         String[] locationUuid = responseEntity.getHeaders()
@@ -97,7 +96,7 @@ class CustomerControllerIT {
         customerDto.setCustomerName(customerName);
 
         ResponseEntity<Void> responseEntity = customerController.updateCostumerById(customer.getId(), customerDto);
-        assertEquals(HttpStatusCode.valueOf(201), responseEntity.getStatusCode());
+        assertEquals(HttpStatusCode.valueOf(200), responseEntity.getStatusCode());
 
         Customer updatedCustomer = customerRepository.findById(customer.getId()).orElseThrow(NotFoundException::new);
         assertEquals(updatedCustomer.getCustomerName(), customerName);

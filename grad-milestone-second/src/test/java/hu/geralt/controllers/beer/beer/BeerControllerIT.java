@@ -1,23 +1,25 @@
 package hu.geralt.controllers.beer.beer;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 import java.util.UUID;
 
+import hu.geralt.bootstrap.BootstrapData;
 import hu.geralt.dtos.beer.BeerDto;
 import hu.geralt.entities.beer.Beer;
 import hu.geralt.exceptions.NotFoundException;
 import hu.geralt.mappers.beer.BeerMapper;
 import hu.geralt.repositories.beer.BeerRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 class BeerControllerIT {
@@ -27,9 +29,18 @@ class BeerControllerIT {
 
     @Autowired
     BeerRepository beerRepository;
-    
+
     @Autowired
     BeerMapper beerMapper;
+
+    @Autowired
+    BootstrapData bootstrapData;
+
+    @BeforeEach
+    void setup() {
+        beerRepository.deleteAll();
+        bootstrapData.run();
+    }
 
     @Test
     void testListBeers() {
@@ -38,8 +49,7 @@ class BeerControllerIT {
         assertThat(dtos).hasSize(3);
     }
 
-    @Rollback
-    @Transactional
+
     @Test
     void testEmptyBeerList() {
         beerRepository.deleteAll();
@@ -62,15 +72,13 @@ class BeerControllerIT {
     }
 
     @Test
-    @Rollback
-    @Transactional
     void testSaveBeer() {
         BeerDto beerDto = BeerDto.builder()
                 .beerName("New Beer").build();
 
         ResponseEntity<Void> responseEntity = beerController.createBeer(beerDto);
 
-        assertEquals(responseEntity.getStatusCode(), HttpStatusCode.valueOf(201));
+        assertEquals(HttpStatusCode.valueOf(201), responseEntity.getStatusCode());
         assertNotNull(responseEntity.getHeaders().getLocation());
 
         String[] locationUuid = responseEntity.getHeaders()
@@ -83,8 +91,6 @@ class BeerControllerIT {
     }
 
     @Test
-    @Rollback
-    @Transactional
     void testUpdateBeer() {
         Beer beer = beerRepository.findAll().getFirst();
         BeerDto beerDto = beerMapper.beerToBeerDto(beer);
@@ -94,11 +100,12 @@ class BeerControllerIT {
         beerDto.setBeerName(beerName);
 
         ResponseEntity<Void> responseEntity = beerController.updateBeerById(beer.getId(), beerDto);
-        assertEquals(HttpStatusCode.valueOf(201), responseEntity.getStatusCode());
+        assertEquals(HttpStatusCode.valueOf(200), responseEntity.getStatusCode());
 
         Beer updatedBeer = beerRepository.findById(beer.getId()).orElseThrow(NotFoundException::new);
         assertEquals(updatedBeer.getBeerName(), beerName);
     }
+
     @Test
     void testUpdatedBeerNotFound() {
         UUID randomUuid = UUID.randomUUID();
@@ -110,8 +117,6 @@ class BeerControllerIT {
     }
 
     @Test
-    @Rollback
-    @Transactional
     void testDeleteBeer() {
         Beer beer = beerRepository.findAll().getFirst();
 
