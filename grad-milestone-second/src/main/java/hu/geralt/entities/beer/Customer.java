@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Version;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +31,8 @@ public class Customer {
     @Column(name = "customer_id", updatable = false, nullable = false)
     private UUID id;
 
+    @NotNull
+    @NotBlank
     private String customerName;
 
     @Version

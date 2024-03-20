@@ -5,12 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
 import hu.geralt.bootstrap.BootstrapData;
 import hu.geralt.dtos.beer.BeerDto;
 import hu.geralt.entities.beer.Beer;
+import hu.geralt.entities.beer.BeerStyle;
 import hu.geralt.exceptions.NotFoundException;
 import hu.geralt.mappers.beer.BeerMapper;
 import hu.geralt.repositories.beer.BeerRepository;
@@ -74,7 +76,11 @@ class BeerControllerIT {
     @Test
     void testSaveBeer() {
         BeerDto beerDto = BeerDto.builder()
-                .beerName("New Beer").build();
+                .beerName("New Beer")
+                .beerStyle(BeerStyle.PALE_ALE)
+                .upc("2342423")
+                .price(new BigDecimal("435345345"))
+                .build();
 
         ResponseEntity<Void> responseEntity = beerController.createBeer(beerDto);
 
