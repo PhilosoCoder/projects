@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class CustomErrorController {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler
     ResponseEntity<List<Map<String, String>>> handleBindErrors(MethodArgumentNotValidException e) {
         var errorList = e.getFieldErrors().stream()
                 .map(fieldError -> {
@@ -22,6 +23,11 @@ public class CustomErrorController {
                 }).toList();
 
         return ResponseEntity.badRequest().body(errorList);
+    }
+
+    @ExceptionHandler
+    ResponseEntity<Void> handleJpaValidations(TransactionSystemException e) {
+        return ResponseEntity.badRequest().build();
     }
 
 }
