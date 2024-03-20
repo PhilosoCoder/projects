@@ -26,7 +26,7 @@ public class CustomErrorController {
     }
 
     @ExceptionHandler
-    ResponseEntity<Void> handleJpaValidations(TransactionSystemException e) {
+    ResponseEntity<Void> handleJpaViolations(TransactionSystemException e) {
         return ResponseEntity.badRequest().build();
     }
 
