@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,6 +37,7 @@ public class Beer {
 
     @NotNull
     @NotBlank
+    @Size(max = 50)
     private String beerName;
 
     @NotNull
