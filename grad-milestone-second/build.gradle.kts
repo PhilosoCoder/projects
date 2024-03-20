@@ -28,10 +28,13 @@ dependencies {
     val thymeleafVersion = "3.1.2.RELEASE"
     val springBootTestcontainersVersion = "1.19.6"
     val mapStructVersion = "1.5.5.Final"
+    val jakartaValidaton = "3.1.0-M1"
 
     implementation(platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion"))
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation ("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")
+    implementation("jakarta.validation:jakarta.validation-api:$jakartaValidaton")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
 
     implementation("org.flywaydb:flyway-core")

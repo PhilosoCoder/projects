@@ -21,6 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hu.geralt.dtos.beer.BeerDto;
 import hu.geralt.dtos.beer.CustomerDto;
 import hu.geralt.services.beer.customer.CustomerService;
 import hu.geralt.services.beer.customer.CustomerServiceImpl;
@@ -33,6 +34,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 @WebMvcTest(CustomerController.class)
 class CustomerControllerTest {
@@ -101,6 +103,23 @@ class CustomerControllerTest {
     }
 
     @Test
+    void testCreateCustomerWithNullCustomerName() throws Exception {
+        BeerDto beerDto = BeerDto.builder().build();
+
+        given(customerService.saveCustomer(any(CustomerDto.class))).willReturn(customerServiceImpl.listCustomers().get(1));
+
+        MvcResult mvcResult = mockMvc.perform(post("/api/v1/customer")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(beerDto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.length()", is(2)))
+                .andReturn();
+
+        System.out.println(mvcResult.getResponse().getContentAsString());
+    }
+
+    @Test
     void testUpdateCustomer() throws Exception {
         CustomerDto customer = customerServiceImpl.listCustomers().getFirst();
 
@@ -115,6 +134,21 @@ class CustomerControllerTest {
         verify(customerService).updateCostumerById(uuidArgumentCaptor.capture(), any(CustomerDto.class));
 
         assertThat(customer.getId()).isEqualTo(uuidArgumentCaptor.getValue());
+    }
+
+    @Test
+    void testUpdateCustomerWithBlankName() throws Exception {
+        CustomerDto customer = customerServiceImpl.listCustomers().getFirst();
+        customer.setCustomerName("");
+
+        given(customerService.updateCostumerById(any(), any())).willReturn(Optional.of(customer));
+
+        mockMvc.perform(put("/api/v1/customer/" + customer.getId())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(customer)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.length()", is(1)));
     }
 
     @Test

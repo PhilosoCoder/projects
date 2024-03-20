@@ -1,6 +1,5 @@
 package hu.geralt.controllers.beer.customer;
 
-import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -45,7 +45,7 @@ public class CustomerController {
 
     @PostMapping
     @SneakyThrows
-    public ResponseEntity<Void> createCustomer(@RequestBody CustomerDto customer) {
+    public ResponseEntity<Void> createCustomer(@Validated @RequestBody CustomerDto customer) {
         CustomerDto savedCustomer = customerService.saveCustomer(customer);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/customer/" + savedCustomer.getId().toString());
@@ -55,7 +55,7 @@ public class CustomerController {
     @PutMapping("/{customerId}")
     public ResponseEntity<Void> updateCostumerById (
             @PathVariable UUID customerId,
-            @RequestBody CustomerDto customer
+            @Validated @RequestBody CustomerDto customer
     ) {
         if (customerService.updateCostumerById(customerId, customer).isEmpty()) {
             throw new NotFoundException();
