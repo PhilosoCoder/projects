@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import hu.geralt.entities.beer.Beer;
 import hu.geralt.entities.beer.BeerStyle;
@@ -17,6 +18,13 @@ class BeerRepositoryTest {
 
     @Autowired
     BeerRepository beerRepository;
+
+    @Test
+    void testGetBeerByListName() {
+        List<Beer> beerList = beerRepository.findAllByBeerNameIsLikeIgnoreCase("%IPA%");
+
+        assertThat(beerList).hasSize(336);
+    }
 
     @Test
     void testSaveBeer() {

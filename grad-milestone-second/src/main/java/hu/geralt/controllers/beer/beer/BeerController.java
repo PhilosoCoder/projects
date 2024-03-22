@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,8 +33,8 @@ public class BeerController {
     private final BeerService beerService;
 
     @GetMapping
-    public List<BeerDto> listBeers() {
-        return beerService.listBeers();
+    public List<BeerDto> listBeers(@RequestParam(required = false) String beerName) {
+        return beerService.listBeers(beerName);
     }
 
     @GetMapping("/{beerId}")
@@ -58,7 +59,7 @@ public class BeerController {
     ) {
         if (beerService.updateBeerById(beerId, beer).isEmpty()) {
             throw new NotFoundException();
-        };
+        }
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

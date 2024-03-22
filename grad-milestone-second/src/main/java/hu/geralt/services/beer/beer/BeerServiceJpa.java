@@ -25,12 +25,23 @@ public class BeerServiceJpa implements BeerService {
     private final BeerMapper beerMapper;
 
     @Override
-    public List<BeerDto> listBeers() {
-        return beerRepository
-                .findAll()
+    public List<BeerDto> listBeers(String beerName) {
+        List<Beer> beerList;
+
+        if (StringUtils.hasText(beerName)) {
+            beerList = listBeerByName(beerName);
+        } else {
+            beerList = beerRepository.findAll();
+        }
+
+        return beerList
                 .stream()
                 .map(beerMapper::beerToBeerDto)
                 .toList();
+    }
+
+    private List<Beer> listBeerByName(String beerName) {
+        return beerRepository.findAllByBeerNameIsLikeIgnoreCase("%" + beerName + "%");
     }
 
     @Override
@@ -56,9 +67,7 @@ public class BeerServiceJpa implements BeerService {
             foundBeer.setPrice(beer.getPrice());
             atomicReference.set(Optional.of(beerMapper
                     .beerToBeerDto(beerRepository.save(foundBeer))));
-        }, () -> {
-            atomicReference.set(Optional.empty());
-        });
+        }, () -> atomicReference.set(Optional.empty()));
 
         return atomicReference.get();
     }
@@ -94,9 +103,7 @@ public class BeerServiceJpa implements BeerService {
             }
             atomicReference.set(Optional.of(beerMapper
                     .beerToBeerDto(beerRepository.save(foundBeer))));
-        }, () -> {
-            atomicReference.set(Optional.empty());
-        });
+        }, () -> atomicReference.set(Optional.empty()));
 
         return atomicReference.get();
     }

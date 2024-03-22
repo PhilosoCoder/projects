@@ -5,7 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.hamcrest.core.Is.is;
 
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
@@ -65,7 +68,7 @@ class BeerControllerIT {
 
     @Test
     void testListBeers() {
-        List<BeerDto> dtos = beerController.listBeers();
+        List<BeerDto> dtos = beerController.listBeers(null);
 
         assertThat(dtos).hasSize(2413);
     }
@@ -74,9 +77,17 @@ class BeerControllerIT {
     @Test
     void testEmptyBeerList() {
         beerRepository.deleteAll();
-        List<BeerDto> dtos = beerController.listBeers();
+        List<BeerDto> dtos = beerController.listBeers(null );
 
         assertThat(dtos).isEmpty();
+    }
+
+    @Test
+    void testListBeerByName() throws Exception {
+        mockMvc.perform(get("/api/v1/beer")
+                .queryParam("beerName", "IPA"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()", is(336)));
     }
 
     @Test

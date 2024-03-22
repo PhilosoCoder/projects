@@ -8,7 +8,7 @@ import hu.geralt.dtos.beer.BeerDto;
 
 public interface BeerService {
 
-    List<BeerDto> listBeers();
+    List<BeerDto> listBeers(String beerName);
 
     Optional<BeerDto> getBeerById(UUID id);
 
