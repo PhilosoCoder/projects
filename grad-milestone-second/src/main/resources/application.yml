@@ -13,6 +13,8 @@ jpa:
   hibernate:
     dialect: PostgreSQLDialect
     ddl-auto: none
+    show-sql: true
+    format-sql: true
 
 flyway:
   baselineOnMigrate: true

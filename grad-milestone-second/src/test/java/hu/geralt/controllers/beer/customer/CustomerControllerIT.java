@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +57,7 @@ class CustomerControllerIT {
     MockMvc mockMvc;
 
     @BeforeEach
-    void setup() {
+    void setup() throws FileNotFoundException {
         customerRepository.deleteAll();
         bootstrapData.run();
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();

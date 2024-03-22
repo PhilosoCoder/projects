@@ -2,11 +2,14 @@ package hu.geralt.bootstrap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.FileNotFoundException;
+
 import hu.geralt.repositories.book.AuthorRepository;
 import hu.geralt.repositories.beer.BeerRepository;
 import hu.geralt.repositories.book.BookRepository;
 import hu.geralt.repositories.beer.CustomerRepository;
 import hu.geralt.repositories.book.PublisherRepository;
+import hu.geralt.services.beer.beer.BeerCsvService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,9 @@ class BootstrapDataTest {
     BeerRepository beerRepository;
 
     @Autowired
+    BeerCsvService beerCsvService;
+
+    @Autowired
     CustomerRepository customerRepository;
 
     BootstrapData bootstrapData;
@@ -35,17 +41,20 @@ class BootstrapDataTest {
     @BeforeEach
     void setup() {
         bootstrapData = new BootstrapData(
-                authorRepository, bookRepository, publisherRepository, beerRepository, customerRepository);
+                authorRepository, bookRepository, publisherRepository,
+                beerRepository, beerCsvService, customerRepository
+        );
     }
 
     @Test
-    void run() {
+    void run() throws FileNotFoundException {
         bootstrapData.run((String) null);
 
         assertThat(authorRepository.count()).isEqualTo(4);
         assertThat(bookRepository.count()).isEqualTo(2);
         assertThat(publisherRepository.count()).isEqualTo(2);
-        assertThat(beerRepository.count()).isEqualTo(3);
+        assertThat(beerRepository.count()).isEqualTo(2413);
         assertThat(customerRepository.count()).isEqualTo(3);
     }
+
 }

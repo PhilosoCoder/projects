@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +57,7 @@ class BeerControllerIT {
     MockMvc mockMvc;
 
     @BeforeEach
-    void setup() {
+    void setup() throws FileNotFoundException {
         beerRepository.deleteAll();
         bootstrapData.run();
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -66,7 +67,7 @@ class BeerControllerIT {
     void testListBeers() {
         List<BeerDto> dtos = beerController.listBeers();
 
-        assertThat(dtos).hasSize(3);
+        assertThat(dtos).hasSize(2413);
     }
 
 

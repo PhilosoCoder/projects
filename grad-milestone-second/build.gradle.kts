@@ -29,6 +29,7 @@ dependencies {
     val springBootTestcontainersVersion = "1.19.6"
     val mapStructVersion = "1.5.5.Final"
     val jakartaValidaton = "3.1.0-M1"
+    val openCsv = "5.9"
 
     implementation(platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion"))
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -49,6 +50,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:$lombokVersion")
     implementation("org.mapstruct:mapstruct:$mapStructVersion")
     annotationProcessor("org.mapstruct:mapstruct-processor:$mapStructVersion")
+    implementation("com.opencsv:opencsv:$openCsv")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers:$springBootTestcontainersVersion")
