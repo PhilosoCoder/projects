@@ -39,17 +39,17 @@ class BootstrapDataTest {
     BootstrapData bootstrapData;
 
     @BeforeEach
-    void setup() {
+    void setup() throws FileNotFoundException {
         bootstrapData = new BootstrapData(
                 authorRepository, bookRepository, publisherRepository,
                 beerRepository, beerCsvService, customerRepository
         );
+        beerRepository.deleteAll();
+        bootstrapData.run();
     }
 
     @Test
-    void run() throws FileNotFoundException {
-        bootstrapData.run((String) null);
-
+    void testRun(){
         assertThat(authorRepository.count()).isEqualTo(4);
         assertThat(bookRepository.count()).isEqualTo(2);
         assertThat(publisherRepository.count()).isEqualTo(2);

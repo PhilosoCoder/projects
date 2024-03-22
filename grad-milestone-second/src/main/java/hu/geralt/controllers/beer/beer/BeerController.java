@@ -3,6 +3,7 @@ package hu.geralt.controllers.beer.beer;
 import java.util.List;
 import java.util.UUID;
 
+import hu.geralt.entities.beer.BeerStyle;
 import hu.geralt.exceptions.NotFoundException;
 import hu.geralt.dtos.beer.BeerDto;
 import hu.geralt.services.beer.beer.BeerService;
@@ -33,8 +34,11 @@ public class BeerController {
     private final BeerService beerService;
 
     @GetMapping
-    public List<BeerDto> listBeers(@RequestParam(required = false) String beerName) {
-        return beerService.listBeers(beerName);
+    public List<BeerDto> listBeers(
+            @RequestParam(required = false) String beerName,
+            @RequestParam(required = false) BeerStyle beerStyle) {
+
+        return beerService.listBeers(beerName, beerStyle);
     }
 
     @GetMapping("/{beerId}")
