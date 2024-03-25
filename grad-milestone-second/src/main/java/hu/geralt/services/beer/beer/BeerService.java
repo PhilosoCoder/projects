@@ -9,7 +9,7 @@ import hu.geralt.entities.beer.BeerStyle;
 
 public interface BeerService {
 
-    List<BeerDto> listBeers(String beerName, BeerStyle beerStyle);
+    List<BeerDto> listBeers(String beerName, BeerStyle beerStyle, Boolean showInventory);
 
     Optional<BeerDto> getBeerById(UUID id);
 

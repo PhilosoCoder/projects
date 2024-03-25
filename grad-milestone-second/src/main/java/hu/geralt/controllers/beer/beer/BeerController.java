@@ -7,6 +7,7 @@ import hu.geralt.entities.beer.BeerStyle;
 import hu.geralt.exceptions.NotFoundException;
 import hu.geralt.dtos.beer.BeerDto;
 import hu.geralt.services.beer.beer.BeerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -36,9 +37,10 @@ public class BeerController {
     @GetMapping
     public List<BeerDto> listBeers(
             @RequestParam(required = false) String beerName,
-            @RequestParam(required = false) BeerStyle beerStyle) {
+            @RequestParam(required = false) BeerStyle beerStyle,
+            @RequestParam(required = false) Boolean showInventory) {
 
-        return beerService.listBeers(beerName, beerStyle);
+        return beerService.listBeers(beerName, beerStyle, showInventory);
     }
 
     @GetMapping("/{beerId}")
@@ -49,7 +51,7 @@ public class BeerController {
 
     @PostMapping
     @SneakyThrows
-    public ResponseEntity<Void> createBeer(@Validated @RequestBody BeerDto beer) {
+    public ResponseEntity<Void> createBeer(@Valid @RequestBody BeerDto beer) {
         BeerDto savedBeer = beerService.saveBeer(beer);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/beer/" + savedBeer.getId().toString());

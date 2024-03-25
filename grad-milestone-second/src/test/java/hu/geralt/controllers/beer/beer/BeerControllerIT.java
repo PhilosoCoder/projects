@@ -1,7 +1,10 @@
 package hu.geralt.controllers.beer.beer;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -68,7 +71,7 @@ class BeerControllerIT {
 
     @Test
     void testListBeers() {
-        List<BeerDto> dtos = beerController.listBeers(null, null);
+        List<BeerDto> dtos = beerController.listBeers(null, null, false);
 
         assertThat(dtos).hasSize(2413);
     }
@@ -77,7 +80,7 @@ class BeerControllerIT {
     @Test
     void testEmptyBeerList() {
         beerRepository.deleteAll();
-        List<BeerDto> dtos = beerController.listBeers(null, null);
+        List<BeerDto> dtos = beerController.listBeers(null, null, false);
 
         assertThat(dtos).isEmpty();
     }
@@ -96,6 +99,37 @@ class BeerControllerIT {
                         .queryParam("beerStyle", BeerStyle.IPA.toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()", is(548)));
+    }
+
+    @Test
+    void testListBeerByStyleAndNameShowInventoryTrue() throws Exception {
+        mockMvc.perform(get("/api/v1/beer")
+                        .queryParam("beerName", "IPA")
+                        .queryParam("beerStyle", BeerStyle.IPA.toString())
+                        .queryParam("showInventory", "TRUE"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()", is(310)))
+                .andExpect(jsonPath("$.[0].quantityOnHand", notNullValue()));
+    }
+
+    @Test
+    void testListBeerByStyleAndNameShowInventoryFalse() throws Exception {
+        mockMvc.perform(get("/api/v1/beer")
+                        .queryParam("beerName", "IPA")
+                        .queryParam("beerStyle", BeerStyle.IPA.toString())
+                        .queryParam("showInventory", "FALSE"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()", is(310)))
+                .andExpect(jsonPath("$.[0].quantityOnHand", nullValue()));
+    }
+
+    @Test
+    void testListBeerByStyleAndName() throws Exception {
+        mockMvc.perform(get("/api/v1/beer")
+                        .queryParam("beerName", "IPA")
+                        .queryParam("beerStyle", BeerStyle.IPA.toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()", is(310)));
     }
 
     @Test
