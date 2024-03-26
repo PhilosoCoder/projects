@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
-import java.util.List;
 
 import hu.geralt.bootstrap.BootstrapData;
 import hu.geralt.entities.beer.Beer;
@@ -18,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.transaction.TransactionSystemException;
 
 @SpringBootTest
@@ -55,16 +55,16 @@ class BeerRepositoryTest {
 
     @Test
     void testGetBeerByListName() {
-        List<Beer> beerList = beerRepository.findAllByBeerNameIsLikeIgnoreCase("%IPA%");
+        Page<Beer> beerPage = beerRepository.findAllByBeerNameIsLikeIgnoreCase("%IPA%", null);
 
-        assertThat(beerList).hasSize(336);
+        assertThat(beerPage.getContent()).hasSize(336);
     }
 
     @Test
     void testGetBeerByListStyle() {
-        List<Beer> beerList = beerRepository.findAllByBeerStyle(BeerStyle.IPA);
+        Page<Beer> beerPage = beerRepository.findAllByBeerStyle(BeerStyle.IPA, null);
 
-        assertThat(beerList).hasSize(548);
+        assertThat(beerPage.getContent()).hasSize(548);
     }
 
     @Test

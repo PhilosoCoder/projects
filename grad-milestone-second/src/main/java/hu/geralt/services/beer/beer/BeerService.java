@@ -1,15 +1,15 @@
 package hu.geralt.services.beer.beer;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import hu.geralt.dtos.beer.BeerDto;
 import hu.geralt.entities.beer.BeerStyle;
+import org.springframework.data.domain.Page;
 
 public interface BeerService {
 
-    List<BeerDto> listBeers(String beerName, BeerStyle beerStyle, Boolean showInventory);
+    Page<BeerDto> listBeers(String beerName, BeerStyle beerStyle, Boolean showInventory, Integer pageNumber, Integer pageSize);
 
     Optional<BeerDto> getBeerById(UUID id);
 
