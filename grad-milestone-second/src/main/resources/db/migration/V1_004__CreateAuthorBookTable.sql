@@ -3,4 +3,4 @@ CREATE TABLE author_book (
     book_id BIGINT,
 
     PRIMARY KEY (author_id, book_id)
-);
+)

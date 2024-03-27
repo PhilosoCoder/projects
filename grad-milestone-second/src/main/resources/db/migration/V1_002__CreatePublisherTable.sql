@@ -5,4 +5,4 @@ CREATE TABLE publisher (
     city TEXT,
     state TEXT,
     zip TEXT
-);
+)

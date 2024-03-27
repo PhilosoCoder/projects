@@ -1,15 +1,12 @@
 package hu.geralt.entities.beer;
 
 import java.sql.Timestamp;
-import java.util.Set;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
@@ -23,44 +20,32 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Getter
 @Setter
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Builder
-public class BeerOrder {
-
+public class BeerOrderShipment {
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(updatable = false, nullable = false)
-    private UUID id;
+    private UUID beerOrderShipmentId;
 
     @Version
     private Long version;
 
+    @OneToOne
+    private BeerOrder beerOrder;
+
+    private String trackingNumber;
     @CreationTimestamp
     @Column(updatable = false)
     private Timestamp createdAt;
-
     @UpdateTimestamp
     private Timestamp updatedAt;
 
-    private String customerRef;
-
-    @ManyToOne
-    private Customer customer;
-
-    @OneToMany(mappedBy = "beerOrder")
-    private Set<BeerOrderLine> beerOrderLines;
-
-    @OneToOne
-    private BeerOrderShipment beerOrderShipment;
-
-    public boolean isNew() {
-        return this.id == null;
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
-
 }

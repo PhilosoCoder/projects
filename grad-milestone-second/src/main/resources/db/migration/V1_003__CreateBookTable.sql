@@ -5,4 +5,4 @@ CREATE TABLE book (
     publisher BIGINT,
 
     CONSTRAINT fk_book_publisher_id FOREIGN KEY (publisher) REFERENCES publisher (publisher_id)
-);
+)

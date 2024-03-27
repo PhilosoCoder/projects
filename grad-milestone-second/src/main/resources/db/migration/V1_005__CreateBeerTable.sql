@@ -8,4 +8,4 @@ CREATE TABLE beer (
     price DECIMAL NOT NULL,
     created_at TIMESTAMP,
     updated_at TIMESTAMP
-);
+)

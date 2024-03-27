@@ -4,4 +4,4 @@ CREATE TABLE customer (
     version INTEGER,
     created_at TIMESTAMP,
     updated_at TIMESTAMP
-);
+)
