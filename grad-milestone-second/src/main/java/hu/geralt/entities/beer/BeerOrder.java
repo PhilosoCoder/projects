@@ -42,10 +42,10 @@ public class BeerOrder {
 
     @CreationTimestamp
     @Column(updatable = false)
-    private Timestamp createdDate;
+    private Timestamp createdAt;
 
     @UpdateTimestamp
-    private Timestamp lastModifiedDate;
+    private Timestamp updatedAt;
 
     private String customerRef;
 
