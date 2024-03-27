@@ -3,5 +3,6 @@ CREATE TABLE book (
     title TEXT,
     isbn TEXT,
     publisher BIGINT,
+
     CONSTRAINT fk_book_publisher_id FOREIGN KEY (publisher) REFERENCES publisher (publisher_id)
 );
