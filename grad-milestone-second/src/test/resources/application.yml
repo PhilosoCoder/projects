@@ -1,4 +1,4 @@
-spring:
-  datasource:
-    url: jdbc:tc:postgresql:latest:///integration-tests-db
+#spring:
+#  datasource:
+#    url: jdbc:tc:postgresql:latest:///integration-tests-db
 

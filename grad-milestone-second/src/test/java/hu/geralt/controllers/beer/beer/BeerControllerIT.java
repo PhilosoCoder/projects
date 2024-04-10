@@ -12,14 +12,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hu.geralt.bootstrap.BootstrapData;
+import hu.geralt.TestEnvironment;
 import hu.geralt.dtos.beer.BeerDto;
 import hu.geralt.entities.beer.Beer;
 import hu.geralt.entities.beer.BeerStyle;
@@ -27,7 +26,6 @@ import hu.geralt.exceptions.NotFoundException;
 import hu.geralt.mappers.beer.BeerMapper;
 import hu.geralt.repositories.beer.BeerRepository;
 import org.hamcrest.core.IsNull;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,12 +33,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest
-class BeerControllerIT {
+class BeerControllerIT extends TestEnvironment {
 
     @Autowired
     BeerController beerController;
@@ -52,22 +47,7 @@ class BeerControllerIT {
     BeerMapper beerMapper;
 
     @Autowired
-    BootstrapData bootstrapData;
-
-    @Autowired
     ObjectMapper objectMapper;
-
-    @Autowired
-    WebApplicationContext webApplicationContext;
-
-    MockMvc mockMvc;
-
-    @BeforeEach
-    void setup() throws FileNotFoundException {
-        beerRepository.deleteAll();
-        bootstrapData.run();
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    }
 
     @Test
     void testListBeers() {

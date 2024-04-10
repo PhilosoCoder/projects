@@ -20,6 +20,7 @@ import hu.geralt.repositories.book.AuthorRepository;
 import hu.geralt.repositories.book.BookRepository;
 import hu.geralt.repositories.book.PublisherRepository;
 import hu.geralt.services.beer.beer.BeerCsvService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.CommandLineRunner;
@@ -29,6 +30,7 @@ import org.springframework.util.ResourceUtils;
 
 @Component
 @RequiredArgsConstructor
+@Getter
 public class BootstrapData implements CommandLineRunner {
 
     private final AuthorRepository authorRepository;
@@ -121,8 +123,6 @@ public class BootstrapData implements CommandLineRunner {
         loadBeerData();
         loadCsvData();
         loadCustomerData();
-
-        printRepositoryCounts();
     }
 
     private void loadCsvData() throws FileNotFoundException {
@@ -213,14 +213,6 @@ public class BootstrapData implements CommandLineRunner {
 
             customerRepository.saveAll(Arrays.asList(customer, otherCustomer, anotherCustomer));
         }
-    }
-
-    private void printRepositoryCounts() {
-        System.out.println("Author Count: " + authorRepository.count());
-        System.out.println("Book Count: " + bookRepository.count());
-        System.out.println("Publisher Count: " + publisherRepository.count());
-        System.out.println("Beer Count: " + beerRepository.count());
-        System.out.println("Customer Count: " + customerRepository.count());
     }
 
 }

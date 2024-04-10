@@ -4,10 +4,12 @@ import java.sql.Timestamp;
 import java.util.Set;
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -36,7 +38,7 @@ public class BeerOrder {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(updatable = false, nullable = false)
-    private UUID id;
+    private UUID beerOrderId;
 
     @Version
     private Long version;
@@ -51,16 +53,18 @@ public class BeerOrder {
     private String customerRef;
 
     @ManyToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @OneToMany(mappedBy = "beerOrder")
     private Set<BeerOrderLine> beerOrderLines;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "beer_order_shipment_id")
     private BeerOrderShipment beerOrderShipment;
 
     public boolean isNew() {
-        return this.id == null;
+        return this.beerOrderId == null;
     }
 
 }

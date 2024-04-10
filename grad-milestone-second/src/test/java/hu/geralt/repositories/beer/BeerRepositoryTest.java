@@ -3,17 +3,11 @@ package hu.geralt.repositories.beer;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 
-import hu.geralt.bootstrap.BootstrapData;
+import hu.geralt.TestEnvironment;
 import hu.geralt.entities.beer.Beer;
 import hu.geralt.entities.beer.BeerStyle;
-import hu.geralt.repositories.book.AuthorRepository;
-import hu.geralt.repositories.book.BookRepository;
-import hu.geralt.repositories.book.PublisherRepository;
-import hu.geralt.services.beer.beer.BeerCsvService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,37 +15,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.transaction.TransactionSystemException;
 
 @SpringBootTest
-class BeerRepositoryTest {
-
-    @Autowired
-    AuthorRepository authorRepository;
-
-    @Autowired
-    BookRepository bookRepository;
-
-    @Autowired
-    PublisherRepository publisherRepository;
+class BeerRepositoryTest extends TestEnvironment {
 
     @Autowired
     BeerRepository beerRepository;
-
-    @Autowired
-    BeerCsvService beerCsvService;
-
-    @Autowired
-    CustomerRepository customerRepository;
-
-    BootstrapData bootstrapData;
-
-    @BeforeEach
-    void setup() throws FileNotFoundException {
-        bootstrapData = new BootstrapData(
-                authorRepository, bookRepository, publisherRepository,
-                beerRepository, beerCsvService, customerRepository
-        );
-        beerRepository.deleteAll();
-        bootstrapData.run();
-    }
 
     @Test
     void testGetBeerByListName() {

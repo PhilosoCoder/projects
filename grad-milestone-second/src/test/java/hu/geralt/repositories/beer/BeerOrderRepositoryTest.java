@@ -1,16 +1,17 @@
 package hu.geralt.repositories.beer;
 
+import hu.geralt.TestEnvironment;
 import hu.geralt.entities.beer.Beer;
 import hu.geralt.entities.beer.BeerOrder;
+import hu.geralt.entities.beer.BeerOrderShipment;
 import hu.geralt.entities.beer.Customer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
-class BeerOrderRepositoryTest {
+class BeerOrderRepositoryTest extends TestEnvironment {
 
     @Autowired
     BeerOrderRepository beerOrderRepository;
@@ -32,16 +33,18 @@ class BeerOrderRepositoryTest {
     }
 
     @Test
-    @Transactional
     void testBeerOrders() {
         BeerOrder beerOrder = BeerOrder.builder()
                 .customerRef("Test order")
                 .customer(testCustomer)
+                .beerOrderShipment(
+                        BeerOrderShipment.builder()
+                        .trackingNumber("1235r").build())
                 .build();
 
         BeerOrder savedBeerOrder = beerOrderRepository.save(beerOrder);
 
-        System.out.println(savedBeerOrder.getCustomerRef());
+        System.out.println(savedBeerOrder.getBeerOrderShipment().getTrackingNumber());
     }
 
 }

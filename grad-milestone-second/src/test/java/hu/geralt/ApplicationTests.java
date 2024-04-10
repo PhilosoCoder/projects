@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
 @SpringBootTest
-class ApplicationTests {
+class ApplicationTests extends TestEnvironment{
 
     @Autowired
     ApplicationContext applicationContext;

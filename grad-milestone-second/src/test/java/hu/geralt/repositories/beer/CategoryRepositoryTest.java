@@ -1,17 +1,15 @@
 package hu.geralt.repositories.beer;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import hu.geralt.TestEnvironment;
 import hu.geralt.entities.beer.Beer;
 import hu.geralt.entities.beer.Category;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
-class CategoryRepositoryTest {
+class CategoryRepositoryTest extends TestEnvironment {
 
     @Autowired
     CategoryRepository categoryRepository;
@@ -27,7 +25,6 @@ class CategoryRepositoryTest {
     }
 
     @Test
-    @Transactional
     void testAddCategory() {
         Category savedCat = categoryRepository.save(Category.builder()
                 .description("Ales")

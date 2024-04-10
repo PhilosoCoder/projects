@@ -7,6 +7,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Builder
 public class BeerOrderShipment {
+
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
@@ -35,17 +37,16 @@ public class BeerOrderShipment {
     private Long version;
 
     @OneToOne
+    @JoinColumn(name = "beer_order_id")
     private BeerOrder beerOrder;
 
     private String trackingNumber;
+
     @CreationTimestamp
     @Column(updatable = false)
     private Timestamp createdAt;
+
     @UpdateTimestamp
     private Timestamp updatedAt;
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
 }
