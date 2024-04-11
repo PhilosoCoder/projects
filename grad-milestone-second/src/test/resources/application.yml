@@ -1,4 +1,7 @@
-#spring:
-#  datasource:
-#    url: jdbc:tc:postgresql:latest:///integration-tests-db
-
+spring:
+  application:
+    name: grad-milestone-second
+  security:
+    user:
+      name: user
+      password: password

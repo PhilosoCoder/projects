@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: grad-milestone-second
+  security:
+    user:
+      name: user
+      password: password
 
   datasource:
     url: jdbc:postgresql://localhost:5433/grad-milestone-second

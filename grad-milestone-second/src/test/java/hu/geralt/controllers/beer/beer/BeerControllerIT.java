@@ -7,6 +7,7 @@ import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -68,6 +69,7 @@ class BeerControllerIT extends TestEnvironment {
     @Test
     void testListBeerByName() throws Exception {
         mockMvc.perform(get("/api/v1/beer")
+                        .with(httpBasic("user", "password"))
                         .queryParam("beerName", "IPA")
                         .queryParam("pageSize", "800"))
                 .andExpect(status().isOk())
@@ -77,6 +79,7 @@ class BeerControllerIT extends TestEnvironment {
     @Test
     void testListBeerByStyle() throws Exception {
         mockMvc.perform(get("/api/v1/beer")
+                        .with(httpBasic("user", "password"))
                         .queryParam("beerStyle", BeerStyle.IPA.toString())
                         .queryParam("pageSize", "800"))
                 .andExpect(status().isOk())
@@ -86,6 +89,7 @@ class BeerControllerIT extends TestEnvironment {
     @Test
     void testListBeerByStyleAndNameShowInventoryTrue() throws Exception {
         mockMvc.perform(get("/api/v1/beer")
+                        .with(httpBasic("user", "password"))
                         .queryParam("beerName", "IPA")
                         .queryParam("beerStyle", BeerStyle.IPA.toString())
                         .queryParam("showInventory", "TRUE")
@@ -98,6 +102,7 @@ class BeerControllerIT extends TestEnvironment {
     @Test
     void testListBeerByStyleAndNameShowInventoryFalse() throws Exception {
         mockMvc.perform(get("/api/v1/beer")
+                        .with(httpBasic("user", "password"))
                         .queryParam("beerName", "IPA")
                         .queryParam("beerStyle", BeerStyle.IPA.toString())
                         .queryParam("showInventory", "FALSE")
@@ -110,6 +115,7 @@ class BeerControllerIT extends TestEnvironment {
     @Test
     void tesListBeersByStyleAndNameShowInventoryTruePage2() throws Exception {
         mockMvc.perform(get("/api/v1/beer")
+                        .with(httpBasic("user", "password"))
                         .queryParam("beerName", "IPA")
                         .queryParam("beerStyle", BeerStyle.IPA.name())
                         .queryParam("showInventory", "true")
@@ -123,6 +129,7 @@ class BeerControllerIT extends TestEnvironment {
     @Test
     void testListBeerByStyleAndName() throws Exception {
         mockMvc.perform(get("/api/v1/beer")
+                        .with(httpBasic("user", "password"))
                         .queryParam("beerName", "IPA")
                         .queryParam("beerStyle", BeerStyle.IPA.toString())
                         .queryParam("pageSize", "800"))
@@ -217,10 +224,19 @@ class BeerControllerIT extends TestEnvironment {
         beerMap.put("beerName", "New Name123456789123456789123456789123456789123456789");
 
         mockMvc.perform(patch("/api/v1/beer/" + beer.getId())
+                        .with(httpBasic("user", "password"))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(beerMap)))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testNoAuth() throws Exception {
+        mockMvc.perform(get("/api/v1/beer")
+                        .queryParam("beerStyle", BeerStyle.IPA.toString())
+                        .queryParam("pageSize", "800"))
+                .andExpect(status().isUnauthorized());
     }
 
 }

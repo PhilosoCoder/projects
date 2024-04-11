@@ -36,6 +36,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web-services")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
 
@@ -50,7 +51,7 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers:$springBootTestcontainersVersion")
-    //testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.projectlombok:lombok:$lombokVersion")
     testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
 
@@ -63,7 +64,6 @@ dependencies {
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     //developmentOnly("org.springframework.boot:spring-boot-docker-compose")
-    //implementation("org.springframework.boot:spring-boot-starter-security")
 }
 
 tasks {
