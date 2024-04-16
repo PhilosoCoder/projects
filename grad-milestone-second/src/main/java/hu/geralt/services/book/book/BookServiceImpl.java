@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
-    private final BookRepository bookRepository;
+    private BookRepository bookRepository;
 
     @Override
     public Iterable<Book> findAll() {

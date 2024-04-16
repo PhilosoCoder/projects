@@ -8,6 +8,11 @@ spring:
     user:
       name: user
       password: password
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: mongodb
 
   datasource:
     url: jdbc:postgresql://localhost:5433/grad-milestone-second
@@ -24,3 +29,5 @@ jpa:
 
 flyway:
   baselineOnMigrate: true
+
+
