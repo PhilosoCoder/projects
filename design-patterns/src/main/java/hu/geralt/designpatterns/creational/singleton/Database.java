@@ -1,4 +1,4 @@
-package hu.geralt.designpatterns.singleton;
+package hu.geralt.designpatterns.creational.singleton;
 
 // The Database class defines the `getInstance` method that lets
 // clients access the same instance of a database connection

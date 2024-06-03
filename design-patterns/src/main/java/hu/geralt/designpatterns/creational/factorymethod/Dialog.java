@@ -1,4 +1,4 @@
-package hu.geralt.designpatterns.factorymethod;
+package hu.geralt.designpatterns.creational.factorymethod;
 
 // The creator class declares the factory method that must
 // return an object of a product class. The creator's subclasses
