@@ -1,0 +1,60 @@
+Back to the supermarket.
+This week, we’ll implement the code for a checkout system that handles pricing schemes such as “apples cost 50 cents,
+three apples cost $1.30.”
+
+Way back in KataOne we thought about how to model the various options for supermarket pricing.
+We looked at things such as “three for a dollar,” “$1.99 per pound,” and “buy two, get one free.”
+
+This week, let’s implement the code for a supermarket checkout that calculates the total price of a number of items.
+In a normal supermarket, things are identified using Stock Keeping Units, or SKUs.
+In our store, we’ll use individual letters of the alphabet (A, B, C, and so on). Our goods are priced individually.
+In addition, some items are multipriced: buy n of them, and they’ll cost you y cents.
+For example, item ‘A’ might cost 50 cents individually, but this week we have a special offer:
+buy three ‘A’s and they’ll cost you $1.30. In fact this week’s prices are:
+
+ 1 class TestPrice < Test::Unit::TestCase
+ 2
+ 3   def price(goods)
+ 4     co = CheckOut.new(RULES)
+ 5     goods.split(//).each { |item| co.scan(item) }
+ 6     co.total
+ 7   end
+ 8
+ 9   def test_totals
+10     assert_equal(  0, price(""))
+11     assert_equal( 50, price("A"))
+12     assert_equal( 80, price("AB"))
+13     assert_equal(115, price("CDBA"))
+14
+15     assert_equal(100, price("AA"))
+16     assert_equal(130, price("AAA"))
+17     assert_equal(180, price("AAAA"))
+18     assert_equal(230, price("AAAAA"))
+19     assert_equal(260, price("AAAAAA"))
+20
+21     assert_equal(160, price("AAAB"))
+22     assert_equal(175, price("AAABB"))
+23     assert_equal(190, price("AAABBD"))
+24     assert_equal(190, price("DABABA"))
+25   end
+26
+27   def test_incremental
+28     co = CheckOut.new(RULES)
+29     assert_equal(  0, co.total)
+30     co.scan("A");  assert_equal( 50, co.total)
+31     co.scan("B");  assert_equal( 80, co.total)
+32     co.scan("A");  assert_equal(130, co.total)
+33     co.scan("A");  assert_equal(160, co.total)
+34     co.scan("B");  assert_equal(175, co.total)
+35   end
+36 end
+
+
+There are lots of ways of implementing this kind of algorithm; if you have time, experiment with several.
+
+Objectives of the Kata
+To some extent, this is just a fun little problem. But underneath the covers, it’s a stealth exercise in decoupling.
+The challenge description doesn’t mention the format of the pricing rules.
+How can these be specified in such a way that the checkout doesn’t know about particular items and their pricing strategies?
+How can we make the design flexible enough so that we can add new styles of pricing rule in the future?
+
