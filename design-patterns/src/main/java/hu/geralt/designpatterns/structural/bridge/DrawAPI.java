@@ -1,5 +1,8 @@
 package hu.geralt.designpatterns.structural.bridge;
 
+//Decouples an abstraction from its implementation, allowing them to vary independently.
+//Example: Separating the abstraction of a shape from its drawing implementation.
+
 interface DrawAPI {
     void drawCircle(int radius, int x, int y);
 }
