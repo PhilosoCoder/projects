@@ -1,7 +1,7 @@
 package hu.geralt.designpatterns.creational.abstractfactory;
 
 //Provides an interface for creating families of related or dependent objects
-// without specifying their concrete classes.
+//without specifying their concrete classes.
 //Example: GUI factory that creates consistent UI elements for different operating systems.
 
 interface GUIFactory {
