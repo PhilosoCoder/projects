@@ -35,12 +35,12 @@ class ComputerPartDisplayVisitor implements ComputerPartVisitor {
     }
 }
 
-// Concrete Elements: Implements the element interface and defines the accept method
-// to call the visitor's corresponding method.
+// Element interface: Defines the accept method to call the visitor's corresponding method.
 interface ComputerPart {
     void accept(ComputerPartVisitor computerPartVisitor);
 }
 
+// Concrete Elements:
 class Keyboard implements ComputerPart {
     @Override
     public void accept(ComputerPartVisitor computerPartVisitor) {
