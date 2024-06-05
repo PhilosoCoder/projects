@@ -48,7 +48,7 @@ class Context {
     }
 }
 
-// Client
+// Client Code
 public class StrategyPatternDemo {
     public static void main(String[] args) {
         Context context = new Context(new OperationAdd());

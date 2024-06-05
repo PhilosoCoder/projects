@@ -57,7 +57,7 @@ class ConcreteObserver implements Observer {
     }
 }
 
-// Main class demonstrating the Observer pattern.
+// Client Code
 public class ObserverPatternDemo {
     public static void main(String[] args) {
         Subject subject = new Subject();

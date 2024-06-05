@@ -1,4 +1,4 @@
-package hu.geralt.designpatterns.behavioral.template;
+package hu.geralt.designpatterns.behavioral.templatemethod;
 
 // Defines the skeleton of an algorithm in the superclass
 // but lets subclasses override specific steps of the algorithm without changing its structure.
@@ -59,7 +59,7 @@ class Football extends Game {
     }
 }
 
-// Main class demonstrating the Template Method pattern.
+// Client Code
 public class TemplateMethodPatternDemo {
     public static void main(String[] args) {
         Game game = new Cricket(); // Creates a Cricket game.
