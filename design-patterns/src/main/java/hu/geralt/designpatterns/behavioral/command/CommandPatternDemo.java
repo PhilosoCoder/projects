@@ -1,16 +1,16 @@
 package hu.geralt.designpatterns.behavioral.command;
 
-//Encapsulates a request as an object, allowing parameterization of clients with queues,
-//requests, and operations, which facilitates undoable operations and logging.
-//Example: Encapsulating light operations into concrete commands and using an invoker to execute them,
-//enabling flexible control over device actions.
+// Encapsulates a request as an object, allowing parameterization of clients with queues,
+// requests, and operations, which facilitates undoable operations and logging.
+// Example: Encapsulating light operations into concrete commands and using an invoker to execute them,
+// enabling flexible control over device actions.
 
 // Command Interface: Declares an interface for executing operations.
 interface Command {
     void execute();
 }
 
-//Receiver: Knows how to perform the operations associated with carrying out a request.
+// Receiver: Knows how to perform the operations associated with carrying out a request.
 class Light {
     public void turnOn() {
         System.out.println("Light is on");
@@ -63,7 +63,7 @@ class RemoteControl {
     }
 }
 
-//Client
+// Client
 public class CommandPatternDemo {
     public static void main(String[] args) {
         Light light = new Light();

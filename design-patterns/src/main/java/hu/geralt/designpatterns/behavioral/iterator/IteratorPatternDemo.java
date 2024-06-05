@@ -49,7 +49,7 @@ class NameRepository implements Aggregate {
     }
 }
 
-//Client
+// Client
 public class IteratorPatternDemo {
     public static void main(String[] args) {
         NameRepository namesRepository = new NameRepository();

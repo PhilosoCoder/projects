@@ -1,8 +1,8 @@
 package hu.geralt.designpatterns.behavioral.chainofresponsibility;
 
-//Enables the decoupling of senders and receivers of requests.
-//Example: Loggers handle messages based on their severity level,
-//passing them down the chain as needed.
+// Enables the decoupling of senders and receivers of requests.
+// Example: Loggers handle messages based on their severity level,
+// passing them down the chain as needed.
 
 // Abstract class defining the structure of the logger chain and handling the log message propagation.
 abstract class Logger {
@@ -71,6 +71,7 @@ class FileLogger extends Logger {
     }
 }
 
+// Client
 public class ChainPatternDemo {
     // Creates and configures the logger chain.
     private static Logger getChainOfLoggers() {
