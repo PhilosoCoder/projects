@@ -1,4 +1,4 @@
-package hu.geralt.designpatterns.command;
+package hu.geralt.designpatterns.behavioral.command;
 
 //Encapsulates a request as an object, allowing parameterization of clients with queues,
 //requests, and operations, which facilitates undoable operations and logging.
