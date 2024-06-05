@@ -5,7 +5,7 @@ package hu.geralt.designpatterns.behavioral.command;
 // Example: Encapsulating light operations into concrete commands and using an invoker to execute them,
 // enabling flexible control over device actions.
 
-// Command Interface: Declares an interface for executing operations.
+// Command Interface
 interface Command {
     void execute();
 }
@@ -21,7 +21,7 @@ class Light {
     }
 }
 
-// Concrete Command: Turns on the light.
+// Concrete Command
 class TurnOnLightCommand implements Command {
     private Light light;
 
@@ -35,7 +35,7 @@ class TurnOnLightCommand implements Command {
     }
 }
 
-// Concrete Command: Turns off the light.
+// Concrete Command
 class TurnOffLightCommand implements Command {
     private Light light;
 
@@ -63,7 +63,7 @@ class RemoteControl {
     }
 }
 
-// Client
+// Client Code
 public class CommandPatternDemo {
     public static void main(String[] args) {
         Light light = new Light();
@@ -72,11 +72,9 @@ public class CommandPatternDemo {
 
         RemoteControl remote = new RemoteControl();
 
-        // Sets and executes the "turn on" command.
         remote.setCommand(turnOn);
         remote.pressButton();
 
-        // Sets and executes the "turn off" command.
         remote.setCommand(turnOff);
         remote.pressButton();
     }

@@ -28,8 +28,7 @@ abstract class Logger {
         }
     }
 
-    // Abstract method for writing the log message.
-    abstract protected void write(String message);
+    protected abstract void write(String message);
 }
 
 // Concrete logger class handling logging to the console.
@@ -38,7 +37,6 @@ class ConsoleLogger extends Logger {
         this.level = level;
     }
 
-    // Writes the log message to the standard console.
     @Override
     protected void write(String message) {
         System.out.println("Standard Console::Logger: " + message);
@@ -51,7 +49,6 @@ class ErrorLogger extends Logger {
         this.level = level;
     }
 
-    // Writes the log message to the error console.
     @Override
     protected void write(String message) {
         System.out.println("Error Console::Logger: " + message);
@@ -64,14 +61,13 @@ class FileLogger extends Logger {
         this.level = level;
     }
 
-    // Writes the log message to a file.
     @Override
     protected void write(String message) {
         System.out.println("File::Logger: " + message);
     }
 }
 
-// Client
+// Client Code
 public class ChainPatternDemo {
     // Creates and configures the logger chain.
     private static Logger getChainOfLoggers() {

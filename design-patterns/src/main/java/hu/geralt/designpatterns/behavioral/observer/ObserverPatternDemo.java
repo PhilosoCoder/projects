@@ -17,13 +17,11 @@ class Subject {
     private List<Observer> observers = new ArrayList<>();
     private String state;
 
-    // Sets the state and notifies observers.
     public void setState(String state) {
         this.state = state;
         notifyAllObservers();
     }
 
-    // Gets the state.
     public String getState() {
         return state;
     }

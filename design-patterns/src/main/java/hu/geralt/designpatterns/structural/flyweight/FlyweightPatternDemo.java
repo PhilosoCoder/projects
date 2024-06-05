@@ -3,9 +3,9 @@ package hu.geralt.designpatterns.structural.flyweight;
 import java.util.HashMap;
 import java.util.Map;
 
-//The Flyweight pattern optimizes memory usage by sharing common state between objects.
-//example: Multiple Circle objects share intrinsic state (shape)
-//while managing extrinsic state (color) individually.
+// The Flyweight pattern optimizes memory usage by sharing common state between objects.
+// Example: Multiple Circle objects share intrinsic state (shape)
+// while managing extrinsic state (color) individually.
 
 // Flyweight interface
 interface Shape {
@@ -15,7 +15,7 @@ interface Shape {
 
 // Concrete Flyweight
 class Circle implements Shape {
-    //Intrinsic State: Shared between objects, stored in the flyweight object.
+    // Intrinsic State: Shared between objects, stored in the flyweight object.
     private final String shapeType;
 
     public Circle() {
@@ -43,7 +43,7 @@ class ShapeFactory {
     }
 }
 
-// Client
+// Client Code
 public class FlyweightPatternDemo {
     public static void main(String[] args) {
         Shape circle1 = ShapeFactory.getCircle();

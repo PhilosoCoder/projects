@@ -3,7 +3,7 @@ package hu.geralt.designpatterns.behavioral.interpreter;
 // Provides a way to evaluate language grammar or expressions.
 // Example: Build a syntax tree and interpret expressions based on the given context.
 
-// Abstract Expression: Declares an interpret method to interpret expressions.
+// Abstract Expression
 interface Expression {
     boolean interpret(String context);
 }
@@ -56,16 +56,7 @@ class AndExpression implements Expression {
 }
 
 // Context: Contains information that is global to the interpreter.
-class Context {
-    private final String input;
-
-    public Context(String input) {
-        this.input = input;
-    }
-
-    public String getInput() {
-        return input;
-    }
+record Context(String input) {
 }
 
 // Client Code
@@ -90,7 +81,7 @@ public class InterpreterPatternDemo {
         Expression expression = buildInterpreterTree();
 
         // Interpreting the expression
-        boolean result = expression.interpret(context.getInput());
+        boolean result = expression.interpret(context.input());
         System.out.println("Interpreted result: " + result);
     }
 }

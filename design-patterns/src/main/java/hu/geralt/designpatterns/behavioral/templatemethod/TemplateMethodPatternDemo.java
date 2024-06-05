@@ -6,13 +6,10 @@ package hu.geralt.designpatterns.behavioral.templatemethod;
 // to customize specific game steps while maintaining a consistent overall workflow.
 
 abstract class Game {
-    // Abstract method to initialize the game.
     abstract void initialize();
 
-    // Abstract method to start playing the game.
     abstract void startPlay();
 
-    // Abstract method to end the game.
     abstract void endPlay();
 
     // Template method that orchestrates the game's workflow.
@@ -64,7 +61,7 @@ public class TemplateMethodPatternDemo {
     public static void main(String[] args) {
         Game game = new Cricket(); // Creates a Cricket game.
         game.play();               // Plays the cricket game.
-        System.out.println();
+
         game = new Football();     // Creates a Football game.
         game.play();               // Plays the football game.
     }

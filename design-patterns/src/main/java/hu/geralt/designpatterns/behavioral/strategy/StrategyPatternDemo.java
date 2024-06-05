@@ -2,7 +2,6 @@ package hu.geralt.designpatterns.behavioral.strategy;
 
 // Defines a family of algorithms, encapsulates each one, and makes them interchangeable.
 // It allows the algorithm to vary independently of the client using it.
-
 // Example: Illustrating the Strategy pattern in Java, where different arithmetic operations
 // are encapsulated as strategies, allowing clients to choose and switch between them interchangeably.
 

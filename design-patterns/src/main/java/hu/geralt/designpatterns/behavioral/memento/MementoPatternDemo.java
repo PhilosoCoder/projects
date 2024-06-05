@@ -25,12 +25,10 @@ class Memento {
 class Originator {
     private String state;
 
-    // Sets the state of the originator.
     public void setState(String state) {
         this.state = state;
     }
 
-    // Gets the state of the originator.
     public String getState() {
         return state;
     }
@@ -50,18 +48,16 @@ class Originator {
 class Caretaker {
     private List<Memento> mementoList = new ArrayList<>();
 
-    // Adds a memento to the list.
     public void add(Memento state) {
         mementoList.add(state);
     }
 
-    // Gets a memento from the list by index.
     public Memento get(int index) {
         return mementoList.get(index);
     }
 }
 
-// Client
+// Client Code
 public class MementoPatternDemo {
     public static void main(String[] args) {
         Originator originator = new Originator();

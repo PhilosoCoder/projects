@@ -1,8 +1,8 @@
 package hu.geralt.designpatterns.structural.proxy;
 
-//The Proxy pattern acts as a placeholder for another object, controlling access to it.
-//Example: The ProxyImage class manages access to RealImage instances,
-//delaying their creation until necessary.
+// The Proxy pattern acts as a placeholder for another object, controlling access to it.
+// Example: The ProxyImage class manages access to RealImage instances,
+// delaying their creation until necessary.
 
 // Subject Interface
 interface Image {
@@ -46,7 +46,7 @@ class ProxyImage implements Image {
     }
 }
 
-// Client
+// Client Code
 public class ProxyPatternDemo {
     public static void main(String[] args) {
         Image image1 = new ProxyImage("test_image1.jpg");

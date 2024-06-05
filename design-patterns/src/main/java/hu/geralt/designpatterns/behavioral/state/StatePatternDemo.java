@@ -5,7 +5,6 @@ package hu.geralt.designpatterns.behavioral.state;
 // Example: A context object transitioning between different states,
 // triggering corresponding behaviors defined by concrete state objects.
 
-// State Interface
 interface State {
     // Performs an action based on the context's state.
     void doAction(Context context);
