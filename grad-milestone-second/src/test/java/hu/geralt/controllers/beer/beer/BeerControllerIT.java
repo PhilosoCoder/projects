@@ -50,13 +50,6 @@ class BeerControllerIT extends TestEnvironment {
     @Autowired
     ObjectMapper objectMapper;
 
-    @Test
-    void testListBeers() {
-        Page<BeerDto> dtos = beerController.listBeers(null, null, false, 1, 2413);
-
-        assertThat(dtos.getContent()).hasSize(1000);
-    }
-
     // Gherkin test
     // Feature: List Beers
     //
@@ -69,6 +62,13 @@ class BeerControllerIT extends TestEnvironment {
     //    Given a beer inventory
     //    When I request to list beers with page number 1 and page size 2413
     //    Then the list of beers should contain 1000 beers
+
+    @Test
+    void testListBeers() {
+        Page<BeerDto> dtos = beerController.listBeers(null, null, false, 1, 2413);
+
+        assertThat(dtos.getContent()).hasSize(1000);
+    }
 
     @Test
     void testEmptyBeerList() {
