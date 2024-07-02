@@ -57,6 +57,18 @@ class BeerControllerIT extends TestEnvironment {
         assertThat(dtos.getContent()).hasSize(1000);
     }
 
+    // Gherkin test
+    // Feature: List Beers
+    //
+    //  Scenario: List beers with default parameters
+    //    Given a beer inventory
+    //    When I request to list beers with default parameters
+    //    Then I should receive a list of beers
+    //
+    //  Scenario: List beers with specific page size
+    //    Given a beer inventory
+    //    When I request to list beers with page number 1 and page size 2413
+    //    Then the list of beers should contain 1000 beers
 
     @Test
     void testEmptyBeerList() {
