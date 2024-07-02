@@ -1,0 +1,104 @@
+name: Build Docker Image
+run-name: ${{ github.event_name == 'workflow_dispatch' && 'Manual' || 'Auto' }} Build from [ ${{ github.ref_name }} ]
+
+on:
+  push:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+    inputs:
+
+      run-quality-checks:
+        description: Run Quality Checks
+        type: boolean
+        default: false
+
+      service:
+        description: Service
+        type: choice
+        options:
+          - All
+        default: All
+
+jobs:
+  determine-strategy:
+    name: Determine Strategy
+    runs-on: [ self-hosted, routing-jdk21-runner ]
+    outputs:
+      matrix: ${{ steps.set-services.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+  increment-version:
+    name: Increment Version
+    runs-on: [ self-hosted, routing-jdk21-runner ]
+    if: ${{ github.event_name != 'workflow_dispatch' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Increment version
+        uses: ./.github/actions/increment_version
+
+  quality-checks:
+    name: Quality Checks
+    runs-on: [ self-hosted, routing-jdk21-runner ]
+    needs: [ increment-version ]
+    if: ${{ github.event_name != 'workflow_dispatch' && true ||
+      (always() && needs.increment-version.result != 'failure' && github.event.inputs.run-quality-checks == 'true') }}
+
+    env:
+      SNYK_API_KEY: ${{ secrets.SNYK_API_KEY }}
+      SONAR_LOGIN: ${{ secrets.SONAR_LOGIN }}
+      GLOBAL_NEXUS_USERNAME: ${{ secrets.GLOBAL_NEXUS_USERNAME }}
+      GLOBAL_NEXUS_PASSWORD: ${{ secrets.GLOBAL_NEXUS_PASSWORD }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: wrapper
+
+      - name: Build & Test
+        run: ./gradlew build --info --build-cache
+
+      - name: Sonar Analysis
+        run: ./gradlew sonar --info
+
+      - name: Snyk Monitor
+        run: ./gradlew snyk-monitor --info
+
+  validate-strategy:
+    name: Validate Strategy
+    needs: [ determine-strategy ]
+    runs-on: [ self-hosted, routing-jdk21-runner ]
+
+    steps:
+      - id: check-step
+        name: Display Strategy Outputs
+        run: jq . <<< '${{ env.MATRIX }}'
+
+  build-service:
+    name: Build Docker Image
+    needs: [ increment-version, determine-strategy, validate-strategy ]
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix: ${{ fromJSON(needs.determine-strategy.outputs.matrix) }}
+    uses: ./.github/workflows/build-template.yml
+    if: ${{ always() && needs.increment-version.result != 'failure' }}
+    with:
+      execute-workflow: ${{ github.event_name == 'workflow_dispatch' || 'true' }}
+      service-name: ${{ matrix.service }}
+    secrets: inherit
